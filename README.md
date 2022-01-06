@@ -1,1 +1,1 @@
-# SeriesTracker-web-app
+# SeriesTracker Web Application
