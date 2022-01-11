@@ -1,6 +1,8 @@
+const webpack = require('webpack');
 const common = require('./webpack.common.js');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = merge(common, {
     mode: 'development',
@@ -9,15 +11,22 @@ module.exports = merge(common, {
     },
     devtool: 'inline-source-map',
     devServer: {
-        static: './dist',
+        static: {
+            directory: path.join(__dirname, 'dist'),
+        },
         port: 3010,
-        watchFiles: ['./src/**/*.html']
+        watchFiles: ['src/**/*.html'],
+        hot: true,
+        historyApiFallback: true
     },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: 'index.html'
-        })
+            template: 'src/index.html'
+        }),
+        new webpack.DefinePlugin({
+            BASENAME: JSON.stringify("/")
+        }),        
     ],
     module: {
         rules: [

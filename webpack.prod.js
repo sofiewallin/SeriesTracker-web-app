@@ -1,4 +1,5 @@
 const common = require('./webpack.common.js');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -9,7 +10,7 @@ module.exports = merge(common, {
     mode: 'production',
     devtool: 'source-map',
     output: {
-        filename: 'js/[name].[contenthash].bundle.js'
+        filename: 'js/[name].[contenthash].bundle.js',
     },
     optimization: {
         minimize: true,
@@ -17,8 +18,7 @@ module.exports = merge(common, {
             new TerserPlugin(),
             new CssMinimizerPlugin(),
             new HtmlWebpackPlugin({
-                template: './src/index.html',
-                filename: 'index.html',
+                template: 'src/index.html',
                 minify: {
                     collapseWhitespace: true,
                     removeComments: true
@@ -29,7 +29,10 @@ module.exports = merge(common, {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css'
-        })
+        }),
+        new webpack.DefinePlugin({
+            BASENAME: JSON.stringify("/~sowa2002/dt162g/projekt/app/")
+        }),
     ],
     module: {
         rules: [
