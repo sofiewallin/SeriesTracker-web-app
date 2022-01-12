@@ -1,10 +1,17 @@
 import React from 'react';
 
-const HaveWatched = () => {
+import SeriesList from './SeriesList';
+
+const HaveWatched = ({ token, userId }) => {
     return (
-        <section id="have-watched">
-            <h1>Have watched</h1>
-        </section>
+        <>
+            <SeriesList 
+                title='Series you have watched' 
+                watchingStatus='have-watched' 
+                token={token} 
+                userId={userId} 
+            />
+        </>
     );
 }
 

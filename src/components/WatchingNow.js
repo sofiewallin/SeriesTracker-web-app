@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import logoutUser from './Login/logoutUser';
 import Episode from './Episode';
+import logoutUser from './Login/logoutUser';
+import SeriesList from './SeriesList';
 
 const WatchingNow = ({ token, userId }) => {
     const [nextEpisodeList, setNextEpisodeList] = useState([]);
@@ -25,10 +27,11 @@ const WatchingNow = ({ token, userId }) => {
     
         const result = await response.json();
 
+        if (response.status === 401 || response.status === 403) {
+            logoutUser();
+        }
+
         if (!response.ok) {
-            if ([401, 403].includes(response.status)) {
-                logoutUser();
-            }
             throw new Error(response.statusText);
         }
 
@@ -36,15 +39,29 @@ const WatchingNow = ({ token, userId }) => {
     }
 
     return (
-        <section id="next-episode">
-            <h2>Next episode to watch</h2>
-            <ul className="episodes">
-            {nextEpisodeList.length === 0 &&
-                <li>You're up to date with all your series! Maybe you should start watching a new one :)</li>
-            }
-            {nextEpisodeList.map((episode) => (<li key={episode.nextEpisode}><Episode token={token} nextEpisode={episode} /></li>))}
-            </ul>
-        </section>
+        <>
+            <section id="next-episode">
+                <h2>Next episode to watch</h2>
+                <ul className="episodes">
+                {nextEpisodeList.map((episode) => (
+                    <li key={episode.nextEpisode}>
+                        <Episode token={token} nextEpisode={episode} />
+                    </li>
+                ))}
+                {nextEpisodeList.length === 0 &&
+                    <li>You're up to date with all your series! Maybe you should <Link to='/watch-next'>start watching</Link> a new one.</li>
+                }
+                </ul>
+            </section>
+            <SeriesList 
+                token={token} 
+                userId={userId}
+                title='Series you are watching right now' 
+                watchingStatus='watching-now' 
+                nextEpisodeList={nextEpisodeList}
+                setNextEpisodeList={setNextEpisodeList}
+            />
+        </>
     );
 }
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
-import logoutUser from './Login/logoutUser';
+import { Link } from 'react-router-dom';
 
 const Episode = ({ token, nextEpisode }) => {
     const seriesId = nextEpisode.series;
@@ -27,10 +26,11 @@ const Episode = ({ token, nextEpisode }) => {
     
         const result = await response.json();
 
+        if (response.status === 401 || response.status === 403) {
+            logoutUser();
+        }
+
         if (!response.ok) {
-            if ([401, 403].includes(response.status)) {
-                logoutUser();
-            }
             throw new Error(response.statusText);
         }
 
@@ -38,8 +38,8 @@ const Episode = ({ token, nextEpisode }) => {
     }
 
     return (
-        <article className="episode">
-            <h3>{episode.series}</h3>
+        <article className="next-episode">
+            <h3><Link to={'/series/' + seriesId}>{episode.series}</Link></h3>
             <h4>{episode.episodeNumbers} {episode.name}</h4>
         </article>
     );

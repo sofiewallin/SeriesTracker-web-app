@@ -7,6 +7,7 @@ import useToken from './useToken';
 import Layout from '../Layout/Layout';
 
 import Login from '../Login/Login';
+import logoutUser from '../Login/logoutUser';
 import WatchingNow from '../WatchingNow';
 import WatchNext from '../WatchNext';
 import HaveWatched from '../HaveWatched';
@@ -20,7 +21,12 @@ const App = () => {
     let userId;
     
     if (token) {
-        userId = jwt_decode(token).userId;
+        const decodedJwt = jwt_decode(token);
+        userId = decodedJwt.userId;
+
+        if (decodedJwt.exp * 1000 < Date.now()) {
+            logoutUser();
+        }
     } else {
         return <Login setToken={setToken} appName={appName} />
     }
@@ -31,8 +37,8 @@ const App = () => {
                 <Routes>
                     <Route path='/' element={<Layout appName={appName} />}>
                         <Route path='/' element={<WatchingNow token={token} userId={userId} />} />
-                        <Route path='watch-next' element={<WatchNext />} />
-                        <Route path='have-watched' element={<HaveWatched />} />
+                        <Route path='watch-next' element={<WatchNext token={token} userId={userId} />} />
+                        <Route path='have-watched' element={<HaveWatched token={token} userId={userId} />} />
                         <Route path='add-series' element={<AddSeries />} />
                     </Route>
                 </Routes>     
