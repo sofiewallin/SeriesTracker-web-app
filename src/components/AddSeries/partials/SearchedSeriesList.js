@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import SearchedSeriesListItem from './SearchedSeriesListItem';
 
-const SearchedSeriesList = ({ user, logoutUser, apiUrl, searchQuery, seriesList, addSeries, removeSeries }) => {
+const SearchedSeriesList = ({ user, logoutUser, apiUrl, searchQuery, userSeriesList, addUserSeries, removeUserSeries }) => {
     const [searchedSeriesList, setSearchedSeriesList] = useState([]);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -53,9 +53,9 @@ const SearchedSeriesList = ({ user, logoutUser, apiUrl, searchQuery, seriesList,
                 <li key={series._id}>
                     {<SearchedSeriesListItem 
                         series={series} 
-                        seriesList={seriesList}
-                        addSeries={addSeries}
-                        removeSeries={removeSeries}
+                        userSeriesList={userSeriesList}
+                        addUserSeries={addUserSeries}
+                        removeUserSeries={removeUserSeries}
                     />}
                 </li>
             ))}

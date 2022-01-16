@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddingSeries = ({ series, addSeries, setAction, setValue, setIsAddingSeries }) => {
+const AddingSeries = ({ series, addUserSeries, setAction, setValue, setIsAddingSeries }) => {
     const handleClick = async e => {
         e.preventDefault();
         const watchingStatus = e.target.value;
@@ -10,9 +10,9 @@ const AddingSeries = ({ series, addSeries, setAction, setValue, setIsAddingSerie
             watchingStatus: watchingStatus
         }
 
-        const addedSeries = await addSeries(newUserSeries);
+        const addedUserSeries = await addUserSeries(newUserSeries);
         setIsAddingSeries(false);
-        setValue(addedSeries._id);
+        setValue(addedUserSeries._id);
         setAction('remove');
     }
 

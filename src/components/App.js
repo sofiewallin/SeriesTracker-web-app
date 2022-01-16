@@ -18,7 +18,7 @@ const App = () => {
     const [user, setUser] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    const [seriesList, setSeriesList] = useState([]);
+    const [userSeriesList, setUserSeriesList] = useState([]);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -34,7 +34,7 @@ const App = () => {
         setLoggedIn(false);
     }
 
-    const getSeriesList = async () => {
+    const getUserSeriesList = async () => {
         try {
             const response = await fetch(`${apiUrl}/users/${user.userId}/series`, {
                 method: 'GET',
@@ -47,13 +47,13 @@ const App = () => {
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
-                const seriesList = await response.json();
+                const userSeriesList = await response.json();
 
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
 
-                setSeriesList(seriesList);
+                setUserSeriesList(userSeriesList);
                 setError(null);
             }
         } catch (err) {
@@ -63,7 +63,7 @@ const App = () => {
         }
     }
 
-    const addSeries = async newSeries => {
+    const addUserSeries = async newUserSeries => {
         try {
             const response = await fetch(`${apiUrl}/users/${user.userId}/add-series`, {
                 method: 'PATCH',
@@ -71,13 +71,13 @@ const App = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`
                 },
-                body: JSON.stringify(newSeries)
+                body: JSON.stringify(newUserSeries)
             });
 
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
-                const series = await response.json();
+                const addedUserSeries = await response.json();
 
                 if (!response.ok) {
                     throw new Error(response.statusText);
@@ -85,19 +85,19 @@ const App = () => {
 
                 setError(null);
                 
-                return series;
+                return addedUserSeries;
             }
         } catch (err) {
             setError('Something went wrong when adding series. Reload page and try again.');
         } finally {
-            setSeriesList(getSeriesList());
+            setUserSeriesList(getUserSeriesList());
             setIsLoaded(true);
         }
     }
 
-    const removeSeries = async seriesId => {
+    const removeUserSeries = async userSeriesId => {
         try {
-            const response = await fetch(`${apiUrl}/users/${user.userId}/remove-series/${seriesId}`, {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/remove-series/${userSeriesId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const App = () => {
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
-                const series = await response.json();
+                const removedUserSeries = await response.json();
 
                 if (!response.ok) {
                     throw new Error(response.statusText);
@@ -116,12 +116,12 @@ const App = () => {
 
                 setError(null);
 
-                return series;
+                return removedUserSeries;
             }
         } catch (err) {
             setError('Something went wrong when removing series. Reload page and try again.');
         } finally {
-            setSeriesList(getSeriesList());
+            setUserSeriesList(getUserSeriesList());
             setIsLoaded(true);
         }
     }
@@ -145,13 +145,13 @@ const App = () => {
                 if ([401, 403].includes(response.status)) {
                     logoutUser();
                 } else {
-                    const seriesList = await response.json();
+                    const userSeriesList = await response.json();
 
                     if (!response.ok) {
                         throw new Error(response.statusText);
                     }
 
-                    setSeriesList(seriesList);
+                    setUserSeriesList(userSeriesList);
                     setError(null);
                 }
             } catch (err) {
@@ -185,8 +185,8 @@ const App = () => {
                                     user={user}
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
-                                    seriesList={seriesList}
-                                    getSeriesList={getSeriesList}
+                                    userSeriesList={userSeriesList}
+                                    getUserSeriesList={getUserSeriesList}
                                 />
                             } 
                             />
@@ -195,8 +195,8 @@ const App = () => {
                                     user={user}
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
-                                    seriesList={seriesList}
-                                    getSeriesList={getSeriesList}
+                                    userSeriesList={userSeriesList}
+                                    getUserSeriesList={getUserSeriesList}
                                 />
                             } 
                             />
@@ -205,8 +205,8 @@ const App = () => {
                                     user={user}
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
-                                    seriesList={seriesList}
-                                    getSeriesList={getSeriesList}
+                                    userSeriesList={userSeriesList}
+                                    getUserSeriesList={getUserSeriesList}
                                 />
                             } 
                             />
@@ -215,9 +215,9 @@ const App = () => {
                                     user={user}
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
-                                    seriesList={seriesList}
-                                    addSeries={addSeries}
-                                    removeSeries={removeSeries}
+                                    userSeriesList={userSeriesList}
+                                    addUserSeries={addUserSeries}
+                                    removeUserSeries={removeUserSeries}
                                 />
                             } 
                             />

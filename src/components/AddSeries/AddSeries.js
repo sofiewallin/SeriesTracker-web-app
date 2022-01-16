@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import SearchedSeriesList from './partials/SearchedSeriesList';
 
-const AddSeries = ({ user, logoutUser, apiUrl, seriesList, addSeries, removeSeries }) => {
+const AddSeries = ({ user, logoutUser, apiUrl, userSeriesList, addUserSeries, removeUserSeries }) => {
     const [searchQuery, setSearchQuery] = useState(null);
 
     const handleSubmit = async e => {
@@ -27,9 +27,9 @@ const AddSeries = ({ user, logoutUser, apiUrl, seriesList, addSeries, removeSeri
                         logoutUser={logoutUser}
                         apiUrl={apiUrl}
                         searchQuery={searchQuery} 
-                        seriesList={seriesList}
-                        addSeries={addSeries}
-                        removeSeries={removeSeries}
+                        userSeriesList={userSeriesList}
+                        addUserSeries={addUserSeries}
+                        removeUserSeries={removeUserSeries}
                     />
                 )}
                 {!searchQuery && (

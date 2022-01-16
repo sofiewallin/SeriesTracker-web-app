@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import AddingSeries from './AddingSeries';
 
-const AddSeriesListItem = ({ series, seriesList, addSeries, removeSeries }) => {
+const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSeries }) => {
     const [action, setAction] = useState('add');
     const [value, setValue] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false);
@@ -12,9 +12,9 @@ const AddSeriesListItem = ({ series, seriesList, addSeries, removeSeries }) => {
 
     useEffect(() => {
         (async () => {
-            const addedSeries = seriesList.filter((userSeries) => userSeries.series_id === series._id);
-            if(addedSeries.length > 0) {
-                setValue(addedSeries[0]._id);
+            const addedUserSeries = userSeriesList.filter(userSeries => userSeries.series_id === series._id);
+            if(addedUserSeries.length > 0) {
+                setValue(addedUserSeries[0]._id);
                 setAction('remove');
             }
 
@@ -22,15 +22,13 @@ const AddSeriesListItem = ({ series, seriesList, addSeries, removeSeries }) => {
         })();
     }, [])
 
-    console.log(seriesList);
-
     const handleClick = async e => {
         e.preventDefault();
         if (action === 'add') {
             setIsAddingSeries(true);
         } else {
             const userSeriesId = e.target.value;
-            await removeSeries(userSeriesId);
+            await removeUserSeries(userSeriesId);
             setValue(null);
             setAction('add');
         }
@@ -47,7 +45,7 @@ const AddSeriesListItem = ({ series, seriesList, addSeries, removeSeries }) => {
             {isAddingSeries && (
                 <AddingSeries
                     series={series}
-                    addSeries={addSeries}
+                    addUserSeries={addUserSeries}
                     setAction={setAction}
                     setValue={setValue}
                     setIsAddingSeries={setIsAddingSeries}
