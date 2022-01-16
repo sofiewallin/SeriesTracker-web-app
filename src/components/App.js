@@ -35,11 +35,95 @@ const App = () => {
     }
 
     const getSeriesList = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/series`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
 
+            if ([401, 403].includes(response.status)) {
+                logoutUser();
+            } else {
+                const seriesList = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                setSeriesList(seriesList);
+                setError(null);
+            }
+        } catch (err) {
+            setError('Something went wrong when getting list of series. Reload page and try again.');
+        } finally {
+            setIsLoaded(true);
+        }
     }
 
-    const updateSeriesList = async () => {
+    const addSeries = async newSeries => {
+        try {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/add-series`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify(newSeries)
+            });
 
+            if ([401, 403].includes(response.status)) {
+                logoutUser();
+            } else {
+                const series = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                setError(null);
+                
+                return series;
+            }
+        } catch (err) {
+            setError('Something went wrong when adding series. Reload page and try again.');
+        } finally {
+            setSeriesList(getSeriesList());
+            setIsLoaded(true);
+        }
+    }
+
+    const removeSeries = async seriesId => {
+        try {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/remove-series/${seriesId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
+
+            if ([401, 403].includes(response.status)) {
+                logoutUser();
+            } else {
+                const series = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                setError(null);
+
+                return series;
+            }
+        } catch (err) {
+            setError('Something went wrong when removing series. Reload page and try again.');
+        } finally {
+            setSeriesList(getSeriesList());
+            setIsLoaded(true);
+        }
     }
 
     useEffect(() => {
@@ -50,9 +134,10 @@ const App = () => {
             if (storedUser === null) return;
 
             try {
-                const response = await fetch(`https://dt162g-projekt-api.herokuapp.com/users/${storedUser.userId}/series`, {
+                const response = await fetch(`${apiUrl}/users/${storedUser.userId}/series`, {
                     method: 'GET',
                     headers: {
+                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${storedUser.token}`
                     }
                 });
@@ -70,7 +155,7 @@ const App = () => {
                     setError(null);
                 }
             } catch (err) {
-                setError('Something went wrong when fetching series. Reload page and try again.');
+                setError('Something went wrong when getting list of series. Reload page and try again.');
             } finally {
                 setIsLoaded(true);
             }
@@ -131,7 +216,8 @@ const App = () => {
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
                                     seriesList={seriesList}
-                                    getSeriesList={getSeriesList}
+                                    addSeries={addSeries}
+                                    removeSeries={removeSeries}
                                 />
                             } 
                             />
