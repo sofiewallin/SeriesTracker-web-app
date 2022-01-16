@@ -1,7 +1,6 @@
 import React from 'react';
-import logoutUser from '../Login/logoutUser';
 
-const Footer = ({ appName }) => {
+const Footer = ({ appName, logoutUser }) => {
 
     const handleClick = async e => {
         e.preventDefault();
