@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory, setIsMovingSeries }) => {
     
@@ -13,8 +13,8 @@ const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory,
         e.preventDefault();
         const answer = e.target.value;
         if (answer === 'Yes') await clearWatchHistory();
-        setIsClearingWatchHistory(false);
         await changeWatchingStatus('watching-now');
+        setIsClearingWatchHistory(false);
         if (setIsMovingSeries) setIsMovingSeries(false);
     }
 
