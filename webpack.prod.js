@@ -1,5 +1,4 @@
 const common = require('./webpack.common.js');
-const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -29,10 +28,7 @@ module.exports = merge(common, {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css'
-        }),
-        new webpack.DefinePlugin({
-            BASENAME: JSON.stringify("/~sowa2002/dt162g/projekt/app/")
-        }),
+        })
     ],
     module: {
         rules: [

@@ -23,10 +23,7 @@ module.exports = merge(common, {
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html'
-        }),
-        new webpack.DefinePlugin({
-            BASENAME: JSON.stringify("/")
-        }),        
+        })      
     ],
     module: {
         rules: [

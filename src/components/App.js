@@ -170,7 +170,7 @@ const App = () => {
     }
     
     return (
-        <BrowserRouter basename={BASENAME}>
+        <BrowserRouter>
             <Header appName={appName} />
                 <main id="main-content">
                     <div className="message" aria-live="polite"></div>
