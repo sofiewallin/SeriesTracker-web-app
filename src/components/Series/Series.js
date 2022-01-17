@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import SeriesListItem from './partials/SeriesListItem';
+import AddingSeries from './partials/AddingSeries';
 import RemovingSeries from './partials/RemovingSeries';
 
 const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, getUserSeriesList, addUserSeries, removeUserSeries }) => {
     const [series, setSeries] = useState(null);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [isRemovingUserSeries, setIsRemovingUserSeries] = useState(false);
+    
+    const [isAddingSeries, setIsAddingSeries] = useState(false);
+    const [isRemovingSeries, setIsRemovingSeries] = useState(false);
 
     const navigate = useNavigate();
 
@@ -78,9 +81,14 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
         
     }
 
+    const handleAdd = async e => {
+        e.preventDefault();
+        setIsAddingSeries(true);
+    }
+
     const handleRemove = async e => {
         e.preventDefault();
-        setIsRemovingUserSeries(true);
+        setIsRemovingSeries(true);
     }
 
     const toggleEpisodes = e => {
@@ -165,17 +173,26 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
             <p>{series.plot}</p>
             <div className="actions">
                 {!userSeries && (
-                    <button className="button button-add">Add Series</button>
+                    <>
+                        <button className="button button-add" onClick={handleAdd}>Add Series</button>
+                        {isAddingSeries && (
+                            <AddingSeries
+                                series={series}
+                                addUserSeries={addUserSeries}
+                                setIsAddingSeries={setIsAddingSeries}
+                            />
+                        )}
+                    </>
                 )}
                 {userSeries && (
                     <>
                         <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
-                        {isRemovingUserSeries && (
+                        {isRemovingSeries && (
                             <RemovingSeries 
                                 series={series} 
                                 userSeriesId={userSeries._id} 
                                 removeUserSeries={removeUserSeries} 
-                                setIsRemovingUserSeries={setIsRemovingUserSeries} 
+                                setIsRemovingSeries={setIsRemovingSeries} 
                             />
                         )}
                         <button className="button button-move">Move Series</button>

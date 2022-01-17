@@ -1,14 +1,14 @@
 import React from 'react';
 
-const RemovingSeries = ({ series, userSeriesId, removeUserSeries, setIsRemovingUserSeries }) => {
+const RemovingSeries = ({ series, userSeriesId, removeUserSeries, setIsRemovingSeries }) => {
     const handleClick = async e => {
         e.preventDefault();
         const answer = e.target.value;
         if (answer === 'Yes') {
             await removeUserSeries(userSeriesId);
-            setIsRemovingUserSeries(false);
+            setIsRemovingSeries(false);
         } else {
-            setIsRemovingUserSeries(false);
+            setIsRemovingSeries(false);
         }
     }
 

@@ -1,38 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AddingSeries from './AddingSeries';
+import AddingSeries from '../../Series/partials/AddingSeries';
+import RemovingSeries from '../../Series/partials/RemovingSeries';
 
-const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSeries }) => {
-    const [action, setAction] = useState(null);
-    const [value, setValue] = useState(null);
+const SearchedSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSeries }) => {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [userSeries, setUserSeries] = useState(null);
 
     const [isAddingSeries, setIsAddingSeries] = useState(false);
+    const [isRemovingSeries, setIsRemovingSeries] = useState(false);
 
     useEffect(() => {
         (async () => {
             const addedUserSeries = userSeriesList.filter(userSeries => userSeries.series_id === series._id);
             if(addedUserSeries.length > 0) {
-                setValue(addedUserSeries[0]._id);
-                setAction('remove');
+                setUserSeries(addedUserSeries[0]);
             } else {
-                setValue(null);
-                setAction('add');
+                setUserSeries(null);
             }
-
             setIsLoaded(true);
         })();
     }, [userSeriesList])
 
-    const handleClick = async e => {
+    const handleAdd = async e => {
         e.preventDefault();
-        if (action === 'add') {
-            setIsAddingSeries(true);
-        } else {
-            const userSeriesId = e.target.value;
-            await removeUserSeries(userSeriesId);
-        }
+        setIsAddingSeries(true);
+    }
+
+    const handleRemove = async e => {
+        e.preventDefault();
+        setIsRemovingSeries(true);
     }
 
     if (!isLoaded) return <div className="loading">Loading...</div>
@@ -41,17 +39,34 @@ const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSe
         <>
             <article className="series">
                 <h3><Link to={'/series/' + series._id}>{series.name}</Link></h3>
-                <button className={`button button-${action}`} onClick={handleClick} value={value}>{action} series</button>
+                {!userSeries && (
+                    <>
+                        <button className="button button-add" onClick={handleAdd}>Add Series</button>
+                        {isAddingSeries && (
+                            <AddingSeries
+                                series={series}
+                                addUserSeries={addUserSeries}
+                                setIsAddingSeries={setIsAddingSeries}
+                            />
+                        )}
+                    </>
+                )}
+                {userSeries && (
+                    <>
+                        <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
+                        {isRemovingSeries && (
+                            <RemovingSeries 
+                                series={series} 
+                                userSeriesId={userSeries._id} 
+                                removeUserSeries={removeUserSeries} 
+                                setIsRemovingSeries={setIsRemovingSeries} 
+                            />
+                        )}
+                    </>
+                )}
             </article>
-            {isAddingSeries && (
-                <AddingSeries
-                    series={series}
-                    addUserSeries={addUserSeries}
-                    setIsAddingSeries={setIsAddingSeries}
-                />
-            )}
         </>
     );
 }
 
-export default AddSeriesListItem;
+export default SearchedSeriesListItem;
