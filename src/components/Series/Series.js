@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import SeriesListItem from './partials/SeriesListItem';
 
@@ -6,6 +7,7 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
     const [series, setSeries] = useState(null);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const navigate = useNavigate();
 
     const changeWatchingStatus = async watchingStatus => {
         try {
@@ -73,6 +75,29 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
         
     }
 
+    const toggleEpisodes = e => {
+        e.preventDefault();
+
+        const button = e.target;
+        const episodeList = button.nextElementSibling;
+
+        episodeList.classList.toggle('hidden');
+        button.classList.toggle('button-hide');
+        button.classList.toggle('button-show');
+
+        if ( button.getAttribute( 'aria-expanded') === 'false' ) {
+            button.setAttribute( 'aria-expanded', 'true' );
+        } else {
+            button.setAttribute( 'aria-expanded', 'false' );
+        }
+        
+        if (button.innerText === 'Show episodes') {
+            button.innerText = 'Hide episodes';
+        } else {
+            button.innerText = 'Show episodes';
+        }
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -122,11 +147,53 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
     );
 
     return (
+        <>
+        <button onClick={() => navigate(-1)}>Go back</button>
         <article id={`series-${series._id}`} className="series">
             <h1>{series.name}</h1>
-            <p><em>{series.airingStatus}</em></p>
+            {series.airingStatus !== 'Airing' && (
+                <p className="airing-status">{series.airingStatus}</p>
+            )}
             <p>{series.plot}</p>
+            <div className="actions">
+                {!userSeries && (
+                    <button className="button button-add">Add Series</button>
+                )}
+                {userSeries && (
+                    <>
+                        <button className="button button-remove">Remove Series</button>
+                        <button className="button button-move">Move Series</button>
+                    </>
+                )}
+            </div>
+            <h2>Seasons</h2>
+            <ul className="season-list">
+                {series.seasons.map(season => (
+                    <li key={season.number}>
+                        <section id="season" className="season">
+                            <h3>Season {season.number}</h3>
+                            <button className="button button-show" aria-controls={`episode-list-season-${season.number}`} aria-expanded="false" onClick={toggleEpisodes}>Show episodes</button>
+                            <ul id={`episode-list-season-${season.number}`} className="episode-list hidden">
+                                {season.episodes.map(episode => (
+                                    <li key={episode.episodeId}>
+                                        <article id={`episode-${episode._id}`} className="episode">
+                                            <h4>{episode.name}</h4>
+                                            {episode.originalAirDate && (
+                                                <p>{episode.episodeNumbers} - {episode.originalAirDate}</p>
+                                            )}
+                                            {!episode.originalAirDate && (
+                                                <p>{episode.episodeNumbers} - ?</p>
+                                            )}
+                                        </article>
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    </li>
+                ))}
+            </ul>
         </article>
+        </>
     );
 }
 

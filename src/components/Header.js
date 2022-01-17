@@ -5,7 +5,7 @@ const Header = ({ appName }) => {
     return (
         <header id="main-header">
             <h2>{ appName }</h2>
-            <nav id="main-navigation">
+            <nav id="main-navigation" aria-label="Main navigation">
                 <ul className="menu">
                     <li>
                         <Link end to='/' className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
