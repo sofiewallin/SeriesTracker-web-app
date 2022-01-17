@@ -18,7 +18,7 @@ const AddSeries = ({ user, logoutUser, apiUrl, userSeriesList, addUserSeries, re
             <form action="/" id="search-series-form" onSubmit={handleSubmit}>
                 <label htmlFor="search-input" className="visually-hidden">Search</label>
                 <input type="search" name="search" id="search-input" />
-                <button type="submit">Search series</button>
+                <button type="submit" className="button button-submit">Search series</button>
             </form>
             <section id="search-results">
                 {searchQuery && (

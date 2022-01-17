@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import Series from './Series/Series';
+
 const HaveWatched = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesList }) => {
     const [filteredUserSeriesList, setFilteredUserSeriesList] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -22,7 +24,15 @@ const HaveWatched = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
             <ul className="series-list">
                 {filteredUserSeriesList.map(userSeries => (
                     <li key={userSeries._id}>
-                        {userSeries.series_id}
+                        <Series 
+                            user={user} 
+                            logoutUser={logoutUser} 
+                            apiUrl={apiUrl} 
+                            userSeries={userSeries} 
+                            seriesId={userSeries.series_id} 
+                            isListItem={true}
+                            getUserSeriesList={getUserSeriesList}
+                            />
                     </li>
                 ))}
             </ul>

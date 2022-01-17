@@ -10,6 +10,7 @@ import WatchingNow from './WatchingNow/WatchingNow';
 import WatchNext from './WatchNext';
 import HaveWatched from './HaveWatched';
 import AddSeries from './AddSeries/AddSeries';
+import SeriesDetails from './SeriesDetails';
 
 const App = () => {
     const [appName] = useState('Series Tracker');
@@ -90,7 +91,7 @@ const App = () => {
         } catch (err) {
             setError('Something went wrong when adding series. Reload page and try again.');
         } finally {
-            setUserSeriesList(getUserSeriesList());
+            await getUserSeriesList();
             setIsLoaded(true);
         }
     }
@@ -121,7 +122,7 @@ const App = () => {
         } catch (err) {
             setError('Something went wrong when removing series. Reload page and try again.');
         } finally {
-            setUserSeriesList(getUserSeriesList());
+            await getUserSeriesList();
             setIsLoaded(true);
         }
     }
@@ -129,9 +130,9 @@ const App = () => {
     useEffect(() => {
         (async () => {
             const storedUser = getUser();
-            setUser(getUser());
-
             if (storedUser === null) return;
+
+            setUser(getUser());
 
             try {
                 const response = await fetch(`${apiUrl}/users/${storedUser.userId}/series`, {
@@ -216,6 +217,18 @@ const App = () => {
                                     logoutUser={logoutUser}
                                     apiUrl={apiUrl}
                                     userSeriesList={userSeriesList}
+                                    addUserSeries={addUserSeries}
+                                    removeUserSeries={removeUserSeries}
+                                />
+                            } 
+                            />
+                            <Route path='series/:seriesId' element={
+                                <SeriesDetails
+                                    user={user}
+                                    logoutUser={logoutUser}
+                                    apiUrl={apiUrl}
+                                    userSeriesList={userSeriesList}
+                                    getUserSeriesList={getUserSeriesList}
                                     addUserSeries={addUserSeries}
                                     removeUserSeries={removeUserSeries}
                                 />

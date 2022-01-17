@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import AddingSeries from './AddingSeries';
 
 const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSeries }) => {
-    const [action, setAction] = useState('add');
-    const [value, setValue] = useState(null)
+    const [action, setAction] = useState(null);
+    const [value, setValue] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
     const [isAddingSeries, setIsAddingSeries] = useState(false);
@@ -16,11 +16,14 @@ const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSe
             if(addedUserSeries.length > 0) {
                 setValue(addedUserSeries[0]._id);
                 setAction('remove');
+            } else {
+                setValue(null);
+                setAction('add');
             }
 
             setIsLoaded(true);
         })();
-    }, [])
+    }, [userSeriesList])
 
     const handleClick = async e => {
         e.preventDefault();
@@ -29,8 +32,6 @@ const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSe
         } else {
             const userSeriesId = e.target.value;
             await removeUserSeries(userSeriesId);
-            setValue(null);
-            setAction('add');
         }
     }
 
@@ -40,14 +41,12 @@ const AddSeriesListItem = ({ series, userSeriesList, addUserSeries, removeUserSe
         <>
             <article className="series">
                 <h3><Link to={'/series/' + series._id}>{series.name}</Link></h3>
-                <button className={`button ${action}-button`} onClick={handleClick} value={value}>{action} series</button>
+                <button className={`button button-${action}`} onClick={handleClick} value={value}>{action} series</button>
             </article>
             {isAddingSeries && (
                 <AddingSeries
                     series={series}
                     addUserSeries={addUserSeries}
-                    setAction={setAction}
-                    setValue={setValue}
                     setIsAddingSeries={setIsAddingSeries}
                 />
             )}
