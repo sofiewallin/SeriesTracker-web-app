@@ -59,8 +59,6 @@ const App = () => {
             }
         } catch (err) {
             setError('Something went wrong when getting list of series. Reload page and try again.');
-        } finally {
-            setIsLoaded(true);
         }
     }
 
@@ -92,7 +90,6 @@ const App = () => {
             setError('Something went wrong when adding series. Reload page and try again.');
         } finally {
             await getUserSeriesList();
-            setIsLoaded(true);
         }
     }
 
@@ -123,7 +120,6 @@ const App = () => {
             setError('Something went wrong when removing series. Reload page and try again.');
         } finally {
             await getUserSeriesList();
-            setIsLoaded(true);
         }
     }
 

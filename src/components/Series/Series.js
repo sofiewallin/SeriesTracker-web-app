@@ -13,6 +13,8 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
     const [isAddingSeries, setIsAddingSeries] = useState(false);
     const [isRemovingSeries, setIsRemovingSeries] = useState(false);
 
+    const [watchedEpisodes, setWatchedEpisodes] = useState([]);
+
     const navigate = useNavigate();
 
     const changeWatchingStatus = async watchingStatus => {
@@ -74,11 +76,61 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
     }
 
     const watchEpisode = async episodeId => {
+        try {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/series/${userSeries._id}/watch-episode/${episodeId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
 
+            if ([401, 403].includes(response.status)) {
+                logoutUser();
+            } else {
+                const updatedUserSeries = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                setError(null);
+                return updatedUserSeries;
+            }
+        } catch (err) {
+            setError('Something went wrong when updating series. Reload page and try again.');
+        } finally {
+            await getUserSeriesList();
+        }
     }
 
     const unwatchEpisode = async episodeId => {
-        
+        try {
+            const response = await fetch(`${apiUrl}/users/${user.userId}/series/${userSeries._id}/unwatch-episode/${episodeId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
+
+            if ([401, 403].includes(response.status)) {
+                logoutUser();
+            } else {
+                const updatedUserSeries = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                setError(null);
+                return updatedUserSeries;
+            }
+        } catch (err) {
+            setError('Something went wrong when updating series. Reload page and try again.');
+        } finally {
+            await getUserSeriesList();
+        }
     }
 
     const handleAdd = async e => {
@@ -114,6 +166,18 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
         }
     }
 
+    const handleWatchEpisode = async e => {
+        e.preventDefault();
+        const episodeId = e.target.value;
+        await watchEpisode(episodeId);
+    }
+
+    const handleUnwatchEpisode = async e => {
+        e.preventDefault();
+        const episodeId = e.target.value;
+        await unwatchEpisode(episodeId);
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -142,6 +206,7 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
             } finally {
                 setIsLoaded(true);
             }
+            
         })();
     }, [])
     
@@ -209,13 +274,19 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
                             <ul id={`episode-list-season-${season.number}`} className="episode-list hidden">
                                 {season.episodes.map(episode => (
                                     <li key={episode.episodeId}>
-                                        <article id={`episode-${episode._id}`} className="episode">
+                                        <article id={`episode-${episode.episodeId}`} className="episode">
                                             <h4>{episode.name}</h4>
                                             {episode.originalAirDate && (
                                                 <p>{episode.episodeNumbers} - {episode.originalAirDate}</p>
                                             )}
                                             {!episode.originalAirDate && (
                                                 <p>{episode.episodeNumbers} - ?</p>
+                                            )}
+                                            {userSeries && userSeries.watchedEpisodes.includes(episode.episodeId) && (
+                                                <button className="button button-unwatch-episode" value={episode.episodeId} onClick={handleUnwatchEpisode}>Unwatch episode</button>
+                                            )}
+                                            {userSeries && !userSeries.watchedEpisodes.includes(episode.episodeId) && (
+                                                <button className="button button-watch-episode" value={episode.episodeId} onClick={handleWatchEpisode}>Watch episode</button>
                                             )}
                                         </article>
                                     </li>
