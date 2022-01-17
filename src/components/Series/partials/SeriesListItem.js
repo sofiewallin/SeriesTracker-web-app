@@ -41,15 +41,15 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
             <article id={`series-${series._id}`} className="series-list-item">
                 <h2><Link to={'/series/' + series._id}>{series.name}</Link></h2>
                 <button className="button button-move" value={value} onClick={handleClick}>{action}</button>
+                {isClearingWatchHistory && (
+                    <ClearingWatchHistory
+                        series={series}
+                        changeWatchingStatus={changeWatchingStatus}
+                        clearWatchHistory={clearWatchHistory}
+                        setIsClearingWatchHistory={setIsClearingWatchHistory}
+                    />
+                )}
             </article>
-            {isClearingWatchHistory && (
-                <ClearingWatchHistory
-                    series={series}
-                    changeWatchingStatus={changeWatchingStatus}
-                    clearWatchHistory={clearWatchHistory}
-                    setIsClearingWatchHistory={setIsClearingWatchHistory}
-                />
-            )}
         </>
     );
 }

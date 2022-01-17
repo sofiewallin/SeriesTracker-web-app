@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory }) => {
+const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory, setIsMovingSeries }) => {
+    
+    useEffect(() => {
+        if (setIsMovingSeries) {
+            const changeWatchingStatusPrompt = document.querySelector('.changing-watching-status-prompt');
+            changeWatchingStatusPrompt.innerHTML = '';
+        }
+    }, [])
+
     const handleClick = async e => {
         e.preventDefault();
         const answer = e.target.value;
         if (answer === 'Yes') await clearWatchHistory();
         setIsClearingWatchHistory(false);
         await changeWatchingStatus('watching-now');
+        if (setIsMovingSeries) setIsMovingSeries(false);
     }
 
     return (

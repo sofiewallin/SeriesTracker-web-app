@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SeriesListItem from './partials/SeriesListItem';
 import AddingSeries from './partials/AddingSeries';
 import RemovingSeries from './partials/RemovingSeries';
+import MovingSeries from './partials/MovingSeries';
 
 const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, getUserSeriesList, addUserSeries, removeUserSeries }) => {
     const [series, setSeries] = useState(null);
@@ -12,8 +13,7 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
     
     const [isAddingSeries, setIsAddingSeries] = useState(false);
     const [isRemovingSeries, setIsRemovingSeries] = useState(false);
-
-    const [watchedEpisodes, setWatchedEpisodes] = useState([]);
+    const [isMovingSeries, setIsMovingSeries] = useState(false)
 
     const navigate = useNavigate();
 
@@ -143,6 +143,11 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
         setIsRemovingSeries(true);
     }
 
+    const handleMove = async e => {
+        e.preventDefault();
+        setIsMovingSeries(true);
+    }
+
     const toggleEpisodes = e => {
         e.preventDefault();
 
@@ -260,7 +265,16 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
                                 setIsRemovingSeries={setIsRemovingSeries} 
                             />
                         )}
-                        <button className="button button-move">Move Series</button>
+                        <button className="button button-move" onClick={handleMove}>Move Series</button>
+                        {isMovingSeries && (
+                            <MovingSeries 
+                                series={series} 
+                                watchingStatus={userSeries.watchingStatus}
+                                changeWatchingStatus={changeWatchingStatus}
+                                clearWatchHistory={clearWatchHistory}
+                                setIsMovingSeries={setIsMovingSeries}
+                            />
+                        )}
                     </>
                 )}
             </div>
