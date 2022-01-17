@@ -10,9 +10,13 @@ const SeriesDetails = ({ user, logoutUser, apiUrl, userSeriesList, setUserSeries
     useEffect(() => {
         (async () => {
             const addedUserSeries = userSeriesList.filter(userSeries => userSeries.series_id === seriesId);
-            if(addedUserSeries.length > 0) setUserSeries(addedUserSeries[0]);
+            if(addedUserSeries.length > 0) {
+                setUserSeries(addedUserSeries[0]);
+            } else {
+                setUserSeries(null);
+            }
         })();
-    }, [])
+    }, [userSeriesList])
 
     return (
         <Series 

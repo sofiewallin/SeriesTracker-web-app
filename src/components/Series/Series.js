@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import SeriesListItem from './partials/SeriesListItem';
+import RemovingSeries from './partials/RemovingSeries';
 
 const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, getUserSeriesList, addUserSeries, removeUserSeries }) => {
     const [series, setSeries] = useState(null);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isRemovingUserSeries, setIsRemovingUserSeries] = useState(false);
+
     const navigate = useNavigate();
 
     const changeWatchingStatus = async watchingStatus => {
@@ -73,6 +76,11 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
 
     const unwatchEpisode = async episodeId => {
         
+    }
+
+    const handleRemove = async e => {
+        e.preventDefault();
+        setIsRemovingUserSeries(true);
     }
 
     const toggleEpisodes = e => {
@@ -161,7 +169,15 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
                 )}
                 {userSeries && (
                     <>
-                        <button className="button button-remove">Remove Series</button>
+                        <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
+                        {isRemovingUserSeries && (
+                            <RemovingSeries 
+                                series={series} 
+                                userSeriesId={userSeries._id} 
+                                removeUserSeries={removeUserSeries} 
+                                setIsRemovingUserSeries={setIsRemovingUserSeries} 
+                            />
+                        )}
                         <button className="button button-move">Move Series</button>
                     </>
                 )}
