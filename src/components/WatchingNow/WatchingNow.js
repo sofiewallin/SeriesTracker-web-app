@@ -24,17 +24,19 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
          <section id="next-episode">
             <h2>Next episode to watch</h2>
             <ul className="episodes">
-                {filteredUserSeriesList.map(userSeries => (
-                    <li key={userSeries.nextEpisode}>
-                        <NextEpisode 
-                            user={user} 
-                            logoutUser={logoutUser} 
-                            apiUrl={apiUrl}
-                            seriesId={userSeries.series_id} 
-                            episodeId={userSeries.nextEpisode}
-                        />
-                    </li>
-                ))}
+                {filteredUserSeriesList.map(userSeries => 
+                    userSeries.nextEpisode && (
+                        <li key={userSeries.nextEpisode}>
+                            <NextEpisode 
+                                user={user} 
+                                logoutUser={logoutUser} 
+                                apiUrl={apiUrl}
+                                seriesId={userSeries.series_id} 
+                                episodeId={userSeries.nextEpisode}
+                            />
+                        </li>
+                    )
+                )}
             </ul>
             {filteredUserSeriesList.every(userSeries => userSeries.nextEpisode === null) &&
                 <p>You're up to date with all your series! Maybe you should <Link to='/watch-next'>start watching a new one</Link>.</p>
