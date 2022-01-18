@@ -6,7 +6,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        assetModuleFilename: 'images/[name].[hash][ext][query]',
+        assetModuleFilename: './images/[name].[hash][ext][query]',
         clean: true
     },
     module: {

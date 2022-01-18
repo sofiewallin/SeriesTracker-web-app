@@ -9,7 +9,7 @@ module.exports = merge(common, {
     mode: 'production',
     devtool: 'source-map',
     output: {
-        filename: 'js/[name].[contenthash].bundle.js',
+        filename: './js/[name].[contenthash].bundle.js',
     },
     optimization: {
         minimize: true,
@@ -17,7 +17,8 @@ module.exports = merge(common, {
             new TerserPlugin(),
             new CssMinimizerPlugin(),
             new HtmlWebpackPlugin({
-                template: 'src/index.html',
+                template: './src/index.html',
+                favicon: './src/favicon.ico',
                 minify: {
                     collapseWhitespace: true,
                     removeComments: true

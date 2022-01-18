@@ -1,12 +1,24 @@
+/**
+ * Login component.
+ * 
+ * @author: Sofie Wallin
+ */
+
 import React, { useState } from 'react';
 import jwt_decode from 'jwt-decode';
 
+import Logo from '../images/logo.svg';
+
 const Login = ({ appName, apiUrl, setLoggedIn }) => {
+    // States
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState(null);
 
+    // Login user
     const loginUser = async loginDetails => {
+
+        // Login to the api and catch possible error
         try {
             const response = await fetch(`${apiUrl}/login`, {
                 method: 'POST',
@@ -28,6 +40,7 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
         }
     }
 
+    // Create user object from JWT
     const createUser = async jwt => {
         const token = jwt.token;
         const decodedJwt = jwt_decode(token);
@@ -41,13 +54,16 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
         return user;
     }
 
+    // Store created user in local storage
     const storeUser = async user => {
         localStorage.setItem('user', JSON.stringify(user));
     }
 
+    // Handle the submit event of the form
     const handleSubmit = async e => {
         e.preventDefault();
 
+        // Define login details
         const loginDetails = {
             username: username,
             password: password
@@ -59,39 +75,42 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
         setLoggedIn(true);
     }
 
+    // Check if there is an error and show error if there is one
     if (error) {
         const message = document.querySelector('.message');
         message.classList.add('error', 'is-active');
         message.innerHTML = error;
     }
 
+    // Return component
     return (
         <>
-            <header id="main-header">
-                <h2>{ appName }</h2>
+            <header id='main-header' className='login-header'>
+                <h2 className='logo'><img src={Logo} alt={ appName } /></h2>
             </header>
-            <main id="main-content">
-                <form action="/" id="login-form" onSubmit={handleSubmit}>
+            <main id='main-content' className='login-content'>
+                <form action='/' className='login-form' onSubmit={handleSubmit}>
                     <h1>Sign in</h1>
-                    <div className="message" aria-live="polite"></div>
-                    <p className="form-field form-text-field">
-                        <label htmlFor="username-input">Username</label>
-                        <input type="text" name="username" id="username-input" onChange={e => setUsername(e.target.value)} />
+                    <div className='message' aria-live='polite'></div>
+                    <p className='text-field box'>
+                        <label htmlFor='username-input'>Username</label>
+                        <input type='text' name='username' id='username-input' onChange={e => setUsername(e.target.value)} placeholder='Enter your username' />
                     </p>
-                    <p className="form-field form-text-field">
-                        <label htmlFor="password-input">Password</label>
-                        <input type="password" name="password" id="password-input" onChange={e => setPassword(e.target.value)} />
+                    <p className='text-field box'>
+                        <label htmlFor='password-input'>Password</label>
+                        <input type='password' name='password' id='password-input' onChange={e => setPassword(e.target.value)} placeholder='Enter your password' />
                     </p>
-                    <p className="form-field form-submit-field">
-                        <button type="submit" className="button button-submit">Sign in</button>
+                    <p className='submit-field'>
+                        <button type='submit' className='button'>Sign in</button>
                     </p>
                 </form>
             </main>
-            <footer id="main-footer">
-                <p className="copyright">&copy; { new Date().getFullYear() } { appName }</p>
+            <footer id='main-footer' className='login-footer'>
+                <p className='copyright'>&copy; { new Date().getFullYear() } { appName }</p>
             </footer>
         </>
     );
 }
 
+// Export component
 export default Login;

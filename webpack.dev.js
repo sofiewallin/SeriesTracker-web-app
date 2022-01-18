@@ -15,14 +15,15 @@ module.exports = merge(common, {
             directory: path.join(__dirname, 'dist'),
         },
         port: 3010,
-        watchFiles: ['src/**/*.html'],
+        watchFiles: ['./src/**/*.html'],
         hot: true,
         historyApiFallback: true
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: './src/index.html',
+            favicon: './src/favicon.ico'
         })      
     ],
     module: {
