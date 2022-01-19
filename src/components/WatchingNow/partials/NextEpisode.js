@@ -41,9 +41,9 @@ const NextEpisode = ({ user, logoutUser, apiUrl, seriesId, episodeId }) => {
     }
     
     return (
-        <article className="next-episode">
+        <article className="next-episode box">
             <h3><Link to={'/series/' + seriesId}>{episode.series}</Link></h3>
-            <h4>{episode.episodeNumbers} {episode.name}</h4>
+            <h4><b>{episode.episodeNumbers}</b> {episode.name}</h4>
         </article>
     );
 }

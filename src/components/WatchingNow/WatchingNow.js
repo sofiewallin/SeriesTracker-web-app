@@ -21,6 +21,9 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
 
     return (
         <>
+            <header>
+                <h1>What are you watching today?</h1>
+            </header>
          <section id="next-episode">
             <h2>Next episode to watch</h2>
             <ul className="episodes">
@@ -43,7 +46,7 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
             }
             </section>
             <section id="series-watching-now">
-                <h1>Series you are watching right now</h1>
+                <h2>Series you are watching right now</h2>
                 <ul className="series-list">
                     {filteredUserSeriesList.map(userSeries => (
                         <li key={userSeries._id}>
