@@ -284,14 +284,12 @@ label {
 /*------ Main footer ------*/
 
 #main-footer {
-    &.login-footer {
-        padding-top: 4.8rem;
-        padding-bottom: 6.4rem;
-    }
+    padding-top: 4.8rem;
+    padding-bottom: 4.8rem;
 
     @include breakpoint(desktop) {
         padding-top: 6.4rem;
-        padding-bottom: 8.0rem;
+        padding-bottom: 6.4rem;
     }
 }
 
@@ -322,8 +320,8 @@ select {
     }
 }
 
+#main-footer,
 .login-header,
-.login-footer,
 .login-form h1,
 .login-form .submit-field {
     text-align: center;
@@ -341,11 +339,8 @@ p {
     margin-bottom: 1.2em;
 }
 
-/*------ Links ------*/
-
-a {
-    text-decoration: none;
-    transition: all 0.4s ease-in;
+p:last-child {
+    margin-bottom: 0;
 }
 
 /*------ Headings ------*/
@@ -385,16 +380,33 @@ h2 {
 
 /*------ Links and buttons ------*/
 
+a,
+button {
+    cursor: pointer;
+    transition: all 0.4s ease-in;
+}
+
+a {
+    text-decoration: none;
+}
+
+.highlighted-link {
+    color: lighten($pink, 10%);
+
+    &:hover {
+        color: lighten($pink, 20%);
+        text-decoration: underline;
+    }
+}
+
 // Buttons
 .button {
     @include inline-block;
-    cursor: pointer;
     background-color: $pink;
     border-radius: 2.0rem;
     height: 4.0rem;
     line-height: 4.0rem;
     padding: 0 2.4rem;
-    transition: all 0.4s ease-in;
 
     &:hover {
         background-color: $dark-pink;
