@@ -101,7 +101,7 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
                         <input type='password' name='password' id='password-input' onChange={e => setPassword(e.target.value)} placeholder='Enter your password' />
                     </p>
                     <p className='submit-field'>
-                        <button type='submit' className='button'>Sign in</button>
+                        <button type='submit' className='button button-big'>Sign in</button>
                     </p>
                 </form>
             </main>

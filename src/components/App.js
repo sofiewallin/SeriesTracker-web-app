@@ -14,7 +14,7 @@ import SeriesDetails from './SeriesDetails';
 
 const App = () => {
     const [appName] = useState('Series Tracker');
-    const [apiUrl] = useState('https://dt162g-projekt-api.herokuapp.com');
+    const [apiUrl] = useState('https://series-tracker-rest-api.herokuapp.com');
 
     const [user, setUser] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
