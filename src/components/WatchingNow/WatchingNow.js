@@ -22,11 +22,11 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
     return (
         <>
             <header>
-                <h1>What are you watching today?</h1>
+                <h1 className='heading heading-big'>What are you watching today?</h1>
             </header>
          <section id="next-episode">
-            <h2>Next episode to watch</h2>
-            <ul className="episodes">
+            <h2 className='heading heading-medium'>Next episode to watch</h2>
+            <ul className="next-episode-list">
                 {filteredUserSeriesList.map(userSeries => 
                     userSeries.nextEpisode && (
                         <li key={userSeries.nextEpisode}>
@@ -42,11 +42,11 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
                 )}
             </ul>
             {filteredUserSeriesList.every(userSeries => userSeries.nextEpisode === null) &&
-                <p>You're up to date with all your series! Maybe you should <Link to='/watch-next'>start watching a new one</Link>.</p>
+                <p className='big-text'>You're up to date with all your series! Maybe you should <Link to='/watch-next' className='highlighted-link'>start watching a new one</Link>.</p>
             }
             </section>
             <section id="series-watching-now">
-                <h2>Series you are watching right now</h2>
+                <h2 className='heading heading-medium'>Your current series</h2>
                 <ul className="series-list">
                     {filteredUserSeriesList.map(userSeries => (
                         <li key={userSeries._id}>
@@ -63,7 +63,7 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
                     ))}
                 </ul>
                 {filteredUserSeriesList.length === 0 &&
-                    <p>You have not added anything to watch right now. <Link to='/watch-next'>Start watching a series</Link>!</p>
+                    <p className='big-text'>You have not added anything to watch right now. <Link to='/watch-next' className='highlighted-link'>Start watching a series</Link>!</p>
                 }
             </section>
         </>

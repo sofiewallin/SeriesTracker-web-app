@@ -18,7 +18,7 @@ const Footer = ({ appName, logoutUser }) => {
     // Return component
     return (
         <footer id='main-footer'>
-            <p>&copy; { new Date().getFullYear() } { appName } &nbsp; | &nbsp; <button onClick={handleClick} className='highlighted-link'>Sign out</button></p>
+            <p className='centered'>&copy; { new Date().getFullYear() } { appName } &nbsp; | &nbsp; <button onClick={handleClick} className='highlighted-link'>Sign out</button></p>
         </footer>
     );
 }

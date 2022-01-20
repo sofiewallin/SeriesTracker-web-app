@@ -20,7 +20,8 @@ const WatchNext = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesList
 
     return (
         <section id="series-watch-next">
-            <h1>Series you want to watch next</h1>
+            <h1 className='heading heading-big'>What's next on the list?</h1>
+            <h2 className='headin heading-medium'>Your watchlist</h2>
             <ul className="series-list">
                 {filteredUserSeriesList.map(userSeries => (
                     <li key={userSeries._id}>
@@ -37,7 +38,7 @@ const WatchNext = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesList
                 ))}
             </ul>
             {filteredUserSeriesList.length === 0 &&
-                <p>You have nothing to watch next. <Link to='/add-series'>Add a series</Link>!</p>
+                <p className='big-text'>You have nothing to watch next. <Link to='/add-series' className='highlighted-link'>Add a series</Link>!</p>
             }
         </section>
     );

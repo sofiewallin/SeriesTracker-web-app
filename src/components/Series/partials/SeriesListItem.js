@@ -37,10 +37,10 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
     }
 
     return (
-        <>
-            <article id={`series-${series._id}`} className="series-list-item box">
-                <h3><Link to={'/series/' + series._id}>{series.name}</Link></h3>
-                <button className="button button-move" value={value} onClick={handleClick}>{action}</button>
+        <Link to={'/series/' + series._id} className='box box-link'>
+            <article id={`series-${series._id}`} className="series-list-item clear">
+                <h3 className='heading heading-list-item'>{series.name}</h3>
+                <button className="button button-small" value={value} onClick={handleClick}>{action}</button>
                 {isClearingWatchHistory && (
                     <ClearingWatchHistory
                         series={series}
@@ -50,7 +50,7 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
                     />
                 )}
             </article>
-        </>
+            </Link>
     );
 }
 

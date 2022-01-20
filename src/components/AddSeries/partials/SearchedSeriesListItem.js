@@ -37,11 +37,11 @@ const SearchedSeriesListItem = ({ series, userSeriesList, addUserSeries, removeU
 
     return (
         <>
-            <article className="series">
-                <h3><Link to={'/series/' + series._id}>{series.name}</Link></h3>
+            <article className="series-list-item box box-link clear">
+                <h3 className='heading heading-list-item'><Link to={'/series/' + series._id}>{series.name}</Link></h3>
                 {!userSeries && (
                     <>
-                        <button className="button button-add" onClick={handleAdd}>Add Series</button>
+                        <button className="button button-add button-small" onClick={handleAdd}>Add Series</button>
                         {isAddingSeries && (
                             <AddingSeries
                                 series={series}
@@ -53,7 +53,7 @@ const SearchedSeriesListItem = ({ series, userSeriesList, addUserSeries, removeU
                 )}
                 {userSeries && (
                     <>
-                        <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
+                        <button className="button button-remove button-small" onClick={handleRemove}>Remove Series</button>
                         {isRemovingSeries && (
                             <RemovingSeries 
                                 series={series} 

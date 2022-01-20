@@ -85,12 +85,12 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
     // Return component
     return (
         <>
-            <header id='main-header' className='login-header'>
+            <header id='main-header' className='login-header centered'>
                 <h2 className='logo'><img src={Logo} alt={ appName } /></h2>
             </header>
             <main id='main-content' className='login-content'>
                 <form action='/' className='login-form' onSubmit={handleSubmit}>
-                    <h1>Sign in</h1>
+                    <h1 className='heading heading-big centered'>Sign in</h1>
                     <div className='message' aria-live='polite'></div>
                     <p className='text-field box'>
                         <label htmlFor='username-input'>Username</label>
@@ -100,13 +100,13 @@ const Login = ({ appName, apiUrl, setLoggedIn }) => {
                         <label htmlFor='password-input'>Password</label>
                         <input type='password' name='password' id='password-input' onChange={e => setPassword(e.target.value)} placeholder='Enter your password' />
                     </p>
-                    <p className='submit-field'>
+                    <p className='submit-field centered'>
                         <button type='submit' className='button button-big'>Sign in</button>
                     </p>
                 </form>
             </main>
             <footer id='main-footer' className='login-footer'>
-                <p className='copyright'>&copy; { new Date().getFullYear() } { appName }</p>
+                <p className='centered'>&copy; { new Date().getFullYear() } { appName }</p>
             </footer>
         </>
     );

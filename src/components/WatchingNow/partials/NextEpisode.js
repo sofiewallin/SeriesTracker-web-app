@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const NextEpisode = ({ user, logoutUser, apiUrl, seriesId, episodeId }) => {
     const [episode, setEpisode] = useState([]);
     const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -30,6 +31,8 @@ const NextEpisode = ({ user, logoutUser, apiUrl, seriesId, episodeId }) => {
                 }
             } catch (err) {
                 setError('Something went wrong when getting episodes. Reload page and try again.');
+            } finally {
+                setIsLoaded(true);
             }
         })();
     }, [])
@@ -39,12 +42,16 @@ const NextEpisode = ({ user, logoutUser, apiUrl, seriesId, episodeId }) => {
         message.classList.add('error', 'is-active');
         message.innerHTML = error;
     }
+
+    if (!isLoaded)return <div className="loading">Loading...</div>;
     
     return (
-        <article className="next-episode box">
-            <h3><Link to={'/series/' + seriesId}>{episode.series}</Link></h3>
-            <h4><b>{episode.episodeNumbers}</b> {episode.name}</h4>
-        </article>
+        <Link to={'/series/' + seriesId} className='box box-link'>
+            <article className='next-episode'>
+                <h3 className='heading heading-list-item'>{episode.series}</h3>
+                <h4 className='heading heading-light'>{episode.episodeNumbers} - {episode.name}</h4>
+            </article>
+        </Link>
     );
 }
 

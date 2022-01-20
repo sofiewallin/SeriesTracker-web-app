@@ -14,12 +14,20 @@ const AddingSeries = ({ series, addUserSeries, setIsAddingSeries }) => {
         setIsAddingSeries(false);
     }
 
+    const closePrompt = e => {
+        e.preventDefault();
+        setIsAddingSeries(false);
+    }
+
     return (
-        <div className="choose-watching-status-prompt" aria-live="polite">
-            <h3>Where do you want do add {series.name}?</h3>
-            <button className="button" value='Watching now' onClick={handleClick}>Watching now</button>
-            <button className="button" value='Watch next' onClick={handleClick}>Watch next</button>
-            <button className="button" value='Have watched' onClick={handleClick}>Have watched</button>
+        <div className='prompt-wrapper'>
+            <div className="prompt centered" aria-live="polite">
+                <h3 className='heading'>Where do you want do add <em>{series.name}</em>?</h3>
+                <button className="button button-small" value='Watching now' onClick={handleClick}>Watching now</button>
+                <button className="button button-small" value='Watch next' onClick={handleClick}>Watch next</button>
+                <button className="button button-small" value='Have watched' onClick={handleClick}>Have watched</button>
+                <button className='button-close' onClick={closePrompt}><span className='hidden-visually'>Close</span></button>
+            </div>
         </div>
     );
 }

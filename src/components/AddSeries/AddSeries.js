@@ -14,11 +14,11 @@ const AddSeries = ({ user, logoutUser, apiUrl, userSeriesList, addUserSeries, re
 
     return (
         <>
-            <h1>Add series</h1>
-            <form action="/" id="search-series-form" onSubmit={handleSubmit}>
-                <label htmlFor="search-input" className="visually-hidden">Search</label>
-                <input type="search" name="search" id="search-input" />
-                <button type="submit" className="button button-submit">Search series</button>
+            <h1 className='hidden-visually'>Add series</h1>
+            <form action="/" className="search-form clear" onSubmit={handleSubmit}>
+                <label htmlFor="search-input" className="hidden-visually">Search</label>
+                <input type="search" name="search" id="search-input" className='search-input' placeholder='Enter a series name'/>
+                <button type="submit" className="button button-search"><span className='hidden-visually'>Search series</span></button>
             </form>
             <section id="search-results">
                 {searchQuery && (
@@ -34,8 +34,8 @@ const AddSeries = ({ user, logoutUser, apiUrl, userSeriesList, addUserSeries, re
                 )}
                 {!searchQuery && (
                     <>
-                        <h2>Search series</h2>
-                        <p>Enter the name of the series you want to add.</p>
+                        <h2 className='heading heading-big'>Search series</h2>
+                        <p className='big-text'>Enter the name of the series you want to add.</p>
                     </>
                 )}
             </section>

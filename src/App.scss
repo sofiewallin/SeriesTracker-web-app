@@ -19,6 +19,7 @@ $dark-pink: rgba(155, 40, 120, 1);
 $main-font: ('Nunito', sans-serif);
 
 // Font weight
+$font-light: 300;
 $font-regular: 400;
 $font-semibold: 600;
 
@@ -110,6 +111,12 @@ img {
     outline: none;
 }
 
+:focus-visible {
+    border: none;
+    outline: 2px solid $light-color;
+    outline-offset: 0;
+}
+
 /*------------------------------------*\
     HELPER CLASSES
 \*------------------------------------*/
@@ -188,7 +195,6 @@ img {
 
     & .logo {
         @include inline-block;
-        margin-bottom: 0;
 
         @include breakpoint(tablet) {
             float: left;
@@ -236,10 +242,15 @@ img {
     margin-bottom: 2.4rem;
 }
 
-.text-field,
-.series-list-item,
-.next-episode {
+.series-list li,
+.next-episode-list li,
+.season,
+.login-form .text-field {
     margin-bottom: 1.6rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     @include breakpoint(tablet) {
         margin-bottom: 2.4rem;
@@ -269,11 +280,11 @@ label {
     margin-bottom: 0.5rem;
 }
 
-.text-field input {
+.login-form .text-field input {
     width: 100%;
 }
 
-.submit-field {
+.login-form .submit-field {
     margin-top: 2.4rem;
 
     @include breakpoint(desktop) {
@@ -307,33 +318,39 @@ a {
 }
 
 body,
-input,
 button,
-select {
+input,
+.heading {
     font-weight: $font-regular; 
+    font-family: $main-font;
+}
+
+body,
+button,
+input {
     font-size: 1.6rem;
     line-height: 1.5;
-    font-family: $main-font;
 
     @include breakpoint(desktop) {
         font-size: 1.8rem;
     }
 }
 
-#main-footer,
-.login-header,
-.login-form h1,
-.login-form .submit-field {
+.centered {
     text-align: center;
 }
 
 b,
 strong,
-.button,
-.series-list-item h3,
-.next-episode h3 {
+.button {
     font-weight: $font-semibold;
 }
+
+.loading {
+    color: $background-color;
+}
+
+/*------ Paragraphs ------*/
 
 p {
     margin-bottom: 1.2em;
@@ -343,19 +360,30 @@ p:last-child {
     margin-bottom: 0;
 }
 
+.big-text {
+    font-size: 1.8rem;
+    font-weight: $font-light;
+
+    @include breakpoint(desktop) {
+        font-size: 2.4rem;
+    }
+}
+
 /*------ Headings ------*/
 
-h1,
-h2,
-h3 {
-    line-height: 1.3;
+.heading {
     font-weight: $font-regular;
 }
 
-// H1
-h1 {
+.heading-big,
+.heading-medium {
+    line-height: 1.3;
+}
+
+// Heading big
+.heading-big {
     font-size: 3.2rem;
-    margin-bottom: 1em;
+    margin-bottom: 0.8em;
 
     @include breakpoint(tablet) {
         font-size: 4.0rem;
@@ -367,15 +395,34 @@ h1 {
     }
 }
 
-// H2
-h2 {
-    font-size: 2.0rem;
-    margin-bottom: 0.5em;
+// Heading medium
+.heading-medium {
+    font-size: 2.4rem;
+    margin-bottom: 0.8em;
+    margin-top: 1.2em;
+    
+    @include breakpoint(tablet) {
+        font-size: 3.2rem;
+    }
     
     @include breakpoint(desktop) {
-        font-size: 2.4rem;
-        line-height: 1.2;
+        font-size: 3.6rem;
     }
+}
+
+// Heading list item
+.heading-list-item {
+    font-size: 2.0rem;
+    margin-bottom: 0.2em;
+    line-height: 1.4;
+    
+    @include breakpoint(tablet) {
+        font-size: 2.4rem;
+    }
+}
+
+.heading-light {
+    font-weight: $font-light;
 }
 
 /*------ Links and buttons ------*/
@@ -390,12 +437,33 @@ a {
     text-decoration: none;
 }
 
+.go-back-link,
 .highlighted-link {
     color: lighten($pink, 10%);
 
     &:hover {
         color: lighten($pink, 20%);
         text-decoration: underline;
+    }
+}
+
+.go-back-link {
+    background: url(images/arrow_go_back.svg) no-repeat left center;
+    background-size: 1.6rem 1.2rem;
+    padding-left: 2.4rem;
+
+    &:hover {
+        padding-left: 2.8rem;
+    }
+
+    @include breakpoint(desktop) {
+        background-size: 1.8rem 1.35rem;
+        padding-left: 2.8rem;
+
+        &:hover {
+            background-image: url(images/arrow_go_back_hover.svg);
+            padding-left: 3.2rem;
+        }
     }
 }
 
@@ -412,16 +480,27 @@ a {
         background-color: $dark-pink;
     }
 
-    &:focus-visible {
-        border: none;
-        outline: 2px solid $light-color;
-    }
-
     @include breakpoint(desktop) {
         border-radius: 2.4rem;
         height: 4.8rem;
         line-height: 4.8rem;
         padding: 0 3.2rem;
+    }
+
+    &.button-small {
+        border-radius: 1.4rem;
+        height: 2.8rem;
+        font-size: 1.4rem;
+        line-height: 2.8rem;
+        padding: 0 1.6rem;
+
+        @include breakpoint(tablet) {
+            border-radius: 1.7rem;
+            height: 3.4rem;
+            font-size: 1.6rem;
+            line-height: 3.4rem;
+            padding: 0 2.0rem;
+        }
     }
 
     &.button-big {
@@ -613,7 +692,12 @@ label {
 }
 
 .box {
+    @include block;
     background-color: $box-color;
+
+    &.box-link:hover {
+        background-color: lighten($box-color, 10%);
+    }
 }
 
 /*------ Messages ------*/
@@ -642,4 +726,339 @@ label {
             width: 2.4rem;
         }
     }
+}
+
+/*------------------------------------*\
+    SEARCH FORM
+\*------------------------------------*/
+
+.search-form {
+    margin-bottom: 4.0rem;
+}
+
+.search-input {
+    background-color: $light-color;
+    border-radius: 0.8rem;
+    color: darken($background-color, 10%);
+    float: left;
+    height: 4.0rem;
+    line-height: 4.0rem;
+    margin-right: 0.8rem;
+    padding: 0 1.2rem;
+    width: calc(100% - 4.8rem);
+
+    @include breakpoint(desktop) {
+        height: 4.8rem;
+        line-height: 4.8rem;
+        margin-right: 1.6rem;
+        width: calc(100% - 6.4rem);
+    }
+}
+
+.button-search {
+    background-image: url(images/search_icon.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 2.0rem 2.0rem;
+    padding: 0;
+    width: 4.0rem;
+
+    @include breakpoint(desktop) {
+        width: 4.8rem;
+    }
+}
+
+/*------------------------------------*\
+    NEXT EPISODES
+\*------------------------------------*/
+
+.next-episode-list {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include breakpoint(tablet) {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.4rem;
+
+        & li {
+            margin-bottom: 0;
+        }
+    }
+}
+
+/*------------------------------------*\
+    SERIES LIST
+\*------------------------------------*/
+
+.series-list-item {
+
+    & .heading-list-item {
+        margin-bottom: 0;
+
+        @include breakpoint(mobile-big) {
+            float: left;
+            width: 50%;
+        }
+    }
+    & .button {
+        margin-top: 1.2rem;
+
+        @include breakpoint(mobile-big) {
+            float: right;
+            margin-top: 0;
+        }
+    }
+}
+
+/*------------------------------------*\
+    SERIES DETAILS
+\*------------------------------------*/
+
+.series-details {
+    .general-information {
+        @include breakpoint(tablet) {
+            float: left;
+            padding-right: 3.2rem;
+            width: 76%;
+        }
+
+        @include breakpoint(desktop) {
+            padding-right: 4.0rem;
+        }
+    }
+
+    .actions {
+        padding-top: 3.2rem;
+
+        @include breakpoint(tablet) {
+            float: right;
+            padding-top: 4.8rem;
+            width: 24%;
+        }
+
+        @include breakpoint(desktop) {
+            padding-top: 6.4rem;
+        }
+
+        & .button {
+            margin-right: 1.6rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            @include breakpoint(tablet) {
+                margin-right: 0;
+                margin-bottom: 1.6rem;
+                width: 100%;
+            }
+        }
+    }
+
+    h1 {
+        margin-top: 3.2rem;
+        margin-bottom: 0.1em;
+
+        @include breakpoint(tablet) {
+            margin-top: 4.8rem;
+        }
+
+        @include breakpoint(desktop) {
+            margin-top: 6.4rem;
+        }
+    }
+
+    .airing-status {
+        font-style: italic;
+        font-size: 1.4rem;
+
+        @include breakpoint(desktop) {
+            font-size: 1.6rem;
+        }
+    }
+
+    .plot {
+        margin-top: 1.4em;
+    }
+
+    .season section {
+        position: relative;
+
+        & h3 {
+            margin-bottom: 0;
+        }
+    }
+
+    .button-show,
+    .button-hide {
+        @include block;
+        background: transparent url(images/arrow_open_episodes.svg) no-repeat center center;
+        background-size: 1.2rem 0.8rem;
+        height: 0.8rem;
+        position: absolute;
+        right: 1.0rem;
+        top: 0.9rem;
+        width: 1.2rem;
+
+        @include breakpoint(tablet) {
+            top: 1.3rem;
+        }
+    }
+
+    .button-hide {
+        transform: rotate(180deg);
+    }
+
+    .episode-list {
+        clear: both;
+        max-height: 200.0rem;
+        opacity: 1;
+        transition: all 0.4s ease-out;
+
+        &.hidden {
+            opacity: 0;
+            overflow: hidden;
+            margin: 0;
+            max-height: 0;
+            visibility: hidden;
+        }
+
+        .episode {
+            border-bottom: 1px solid lighten($box-color, 10%);
+            margin-top: 1.2rem;
+            padding-bottom: 1.6rem;
+            position: relative;
+
+            &:last-child {
+                border-bottom: 0;
+                padding-bottom: 0;
+            }
+
+            & article {
+                position: relative;
+            }
+
+            & h4,
+            & p {
+                padding-right: 4.0rem;
+            }
+
+            & h4 {
+                font-weight: $font-semibold;
+            }
+
+            & p {
+                font-weight: $font-light;
+                font-size: 1.4rem;
+                margin-bottom: 0;
+
+                @include breakpoint(tablet) {
+                    font-size: 1.6rem;
+                }
+            }
+        }
+
+        .button-unwatch,
+        .button-watch {
+            @include block;
+            border-radius: 1.2rem;
+            height: 2.4rem;
+            position: absolute;
+            right: 0.4rem;
+            top: 0;
+            width: 2.4rem;
+        }
+
+        .button-unwatch {
+            background: $pink url(images/check_icon.svg) no-repeat center center;
+            background-size: 1.2rem 1.2rem;
+
+            &:hover {
+                background-color: $dark-pink;
+            }
+        }
+
+        .button-watch {
+            background: no-repeat center center;
+            background-color: transparent;
+            border: 2px solid $pink;
+
+            &:hover {
+                background: $pink url(images/check_icon.svg) no-repeat center center;
+                background-size: 1.2rem 1.2rem;
+            }
+        }
+    }
+}
+
+/*------------------------------------*\
+    PROMPTS
+\*------------------------------------*/
+
+.prompt-wrapper {
+    background-color: rgba(30, 30, 40, 0.9);
+    height: 100%;
+    left: 0;
+    padding: 24.0rem 2.4rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.prompt {
+    background-color: $light-color;
+    border-radius: 0.8rem;
+    color: darken($background-color, 10%);
+    max-width: 43.2rem;
+    padding: 1.6rem;
+    position: fixed;
+    width: calc(100% - 4.8rem);
+    z-index: 20;
+
+    @include breakpoint(mobile-big) {
+        left: 50%;
+        margin-left: -21.6rem;
+    }
+
+    @include breakpoint(tablet) {
+        border-radius: 1.6rem;
+    }
+
+    & .button {
+        @include block;
+        margin-top: 1.2rem;
+    }
+    & .button-50 {
+        @include breakpoint(mobile-big) {
+            float: left;
+            margin-bottom: 0 !important;
+            width: calc(50% - 1.6rem) !important;
+
+            &:first-child {
+                margin-right: 0.8rem;
+            }
+
+            &:last-child {
+                margin-left: 0.8rem
+            }
+        }
+    }
+
+    & p {
+        font-size: 1.4rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.6rem;
+    }
+}
+
+.button-close {
+    @include block;
+    background: transparent url(images/close_icon.svg) no-repeat center center;
+    background-size: 1.6rem 1.6rem;
+    position: absolute;
+    height: 1.6rem;
+    right: 0.8rem;
+    top: -3.2rem;
+    width: 1.6rem;
 }

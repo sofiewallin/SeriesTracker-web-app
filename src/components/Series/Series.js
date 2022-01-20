@@ -164,10 +164,10 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
             button.setAttribute( 'aria-expanded', 'false' );
         }
         
-        if (button.innerText === 'Show episodes') {
-            button.innerText = 'Hide episodes';
+        if (button.innerHTML === "<span class='hidden-visually'>Show episodes</span>") {
+            button.innerHTML = "<span class='hidden-visually'>Hide episodes</span>";
         } else {
-            button.innerText = 'Show episodes';
+            button.innerHTML = "<span class='hidden-visually'>Show episodes</span>";
         }
     }
 
@@ -234,61 +234,67 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
 
     return (
         <>
-        <button onClick={() => navigate(-1)}>Go back</button>
-        <article id={`series-${series._id}`} className="series">
-            <h1>{series.name}</h1>
-            {series.airingStatus !== 'Airing' && (
-                <p className="airing-status">{series.airingStatus}</p>
-            )}
-            <p>{series.plot}</p>
-            <div className="actions">
-                {!userSeries && (
-                    <>
-                        <button className="button button-add" onClick={handleAdd}>Add Series</button>
-                        {isAddingSeries && (
-                            <AddingSeries
-                                series={series}
-                                addUserSeries={addUserSeries}
-                                setIsAddingSeries={setIsAddingSeries}
-                            />
-                        )}
-                    </>
-                )}
-                {userSeries && (
-                    <>
-                        <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
-                        {isRemovingSeries && (
-                            <RemovingSeries 
-                                series={series} 
-                                userSeriesId={userSeries._id} 
-                                removeUserSeries={removeUserSeries} 
-                                setIsRemovingSeries={setIsRemovingSeries} 
-                            />
-                        )}
-                        <button className="button button-move" onClick={handleMove}>Move Series</button>
-                        {isMovingSeries && (
-                            <MovingSeries 
-                                series={series} 
-                                watchingStatus={userSeries.watchingStatus}
-                                changeWatchingStatus={changeWatchingStatus}
-                                clearWatchHistory={clearWatchHistory}
-                                setIsMovingSeries={setIsMovingSeries}
-                            />
-                        )}
-                    </>
-                )}
+        <button onClick={() => navigate(-1)} className='go-back-link'>Go back</button>
+        <article id={`series-${series._id}`} className="series-details">
+            <div className='clear'>
+                <div className='general-information'>
+                    <h1 className='heading heading-big'>{series.name}</h1>
+                    {series.airingStatus !== 'Airing' && (
+                        <p className="airing-status">{series.airingStatus}</p>
+                    )}
+                    <p className='plot big-text'>{series.plot}</p>
+                </div>
+                <div className="actions">
+                    {!userSeries && (
+                        <>
+                            <button className="button button-add" onClick={handleAdd}>Add Series</button>
+                            {isAddingSeries && (
+                                <AddingSeries
+                                    series={series}
+                                    addUserSeries={addUserSeries}
+                                    setIsAddingSeries={setIsAddingSeries}
+                                />
+                            )}
+                        </>
+                    )}
+                    {userSeries && (
+                        <>
+                            <button className="button button-remove" onClick={handleRemove}>Remove Series</button>
+                            {isRemovingSeries && (
+                                <RemovingSeries 
+                                    series={series} 
+                                    userSeriesId={userSeries._id} 
+                                    removeUserSeries={removeUserSeries} 
+                                    setIsRemovingSeries={setIsRemovingSeries} 
+                                />
+                            )}
+                            <button className="button button-move" onClick={handleMove}>Move Series</button>
+                            {isMovingSeries && (
+                                <MovingSeries 
+                                    series={series} 
+                                    watchingStatus={userSeries.watchingStatus}
+                                    changeWatchingStatus={changeWatchingStatus}
+                                    clearWatchHistory={clearWatchHistory}
+                                    setIsMovingSeries={setIsMovingSeries}
+                                />
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
-            <h2>Seasons</h2>
+            <h2 className='heading heading-medium'>Seasons</h2>
             <ul className="season-list">
                 {series.seasons.map(season => (
-                    <li key={season.number}>
-                        <section id="season" className="season">
-                            <h3>Season {season.number}</h3>
-                            <button className="button button-show" aria-controls={`episode-list-season-${season.number}`} aria-expanded="false" onClick={toggleEpisodes}>Show episodes</button>
+                    <li key={season.number} className='season box'>
+                        <section>
+                            <h3 className='heading heading-list-item'>Season {season.number}</h3>
+                            <button className="button-show" aria-controls={`episode-list-season-${season.number}`} aria-expanded="false" onClick={toggleEpisodes}>
+                                <span className='hidden-visually'>Show episodes</span>
+                            </button>
                             <ul id={`episode-list-season-${season.number}`} className="episode-list hidden">
                                 {season.episodes.map(episode => (
-                                    <li key={episode.episodeId}>
-                                        <article id={`episode-${episode.episodeId}`} className="episode">
+                                    <li key={episode.episodeId} className='episode'>
+                                        <article id={`episode-${episode.episodeId}`}>
                                             <h4>{episode.name}</h4>
                                             {episode.originalAirDate && (
                                                 <p>{episode.episodeNumbers} - {episode.originalAirDate}</p>
@@ -297,10 +303,14 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
                                                 <p>{episode.episodeNumbers} - ?</p>
                                             )}
                                             {userSeries && userSeries.watchedEpisodes.includes(episode.episodeId) && (
-                                                <button className="button button-unwatch-episode" value={episode.episodeId} onClick={handleUnwatchEpisode}>Unwatch episode</button>
+                                                <button className='button-unwatch' value={episode.episodeId} onClick={handleUnwatchEpisode}>
+                                                    <span className='hidden-visually'>Unwatch episode</span>
+                                                </button>
                                             )}
                                             {userSeries && !userSeries.watchedEpisodes.includes(episode.episodeId) && (
-                                                <button className="button button-watch-episode" value={episode.episodeId} onClick={handleWatchEpisode}>Watch episode</button>
+                                                <button className='button-watch' value={episode.episodeId} onClick={handleWatchEpisode}>
+                                                    <span className='hidden-visually'>Watch episode</span>
+                                                </button>
                                             )}
                                         </article>
                                     </li>
