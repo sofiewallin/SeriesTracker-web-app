@@ -1,3 +1,9 @@
+/**
+ * Webpack config for development.
+ * 
+ * @author: Sofie Wallin
+ */
+
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
 const { merge } = require('webpack-merge');

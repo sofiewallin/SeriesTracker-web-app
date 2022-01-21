@@ -1,3 +1,9 @@
+/**
+ * Webpack config for both development and production.
+ * 
+ * @author: Sofie Wallin
+ */
+
 const path = require('path');
 
 module.exports = {

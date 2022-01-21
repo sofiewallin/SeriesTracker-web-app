@@ -1,6 +1,9 @@
 /**
  * Login component.
  * 
+ * Handles login form and loggin in user to the API. Creates 
+ * a logged in user from token and saves to local storage.
+ * 
  * @author: Sofie Wallin
  */
 

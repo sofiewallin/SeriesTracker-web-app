@@ -1,3 +1,14 @@
+/**
+ * App component.
+ * 
+ * Handles getting the list of series added to the user from the
+ * API and the functions to add and remove series from this list
+ * in the API. Also handles the routing of the application and
+ * the logout of the user.
+ * 
+ * @author: Sofie Wallin
+ */
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
@@ -23,18 +34,21 @@ const App = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
+    // Get user from local storage when logged in
     const getUser = () => {
         const userString = localStorage.getItem('user');
         const user = JSON.parse(userString);
         return user;
     }
 
+    // Logout user
     const logoutUser = () => {
         localStorage.removeItem('user');
         setUser(null);
         setLoggedIn(false);
     }
 
+    // Get list of series added to the user from the API
     const getUserSeriesList = async () => {
         try {
             const response = await fetch(`${apiUrl}/users/${user.userId}/series`, {
@@ -45,6 +59,7 @@ const App = () => {
                 }
             });
 
+            // Logout user if token has expired
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
@@ -54,7 +69,9 @@ const App = () => {
                     throw new Error(response.statusText);
                 }
 
+                // Set list of series to state
                 setUserSeriesList(userSeriesList);
+
                 setError(null);
             }
         } catch (err) {
@@ -62,6 +79,7 @@ const App = () => {
         }
     }
 
+    // Add series to user in the API
     const addUserSeries = async newUserSeries => {
         try {
             const response = await fetch(`${apiUrl}/users/${user.userId}/add-series`, {
@@ -73,6 +91,7 @@ const App = () => {
                 body: JSON.stringify(newUserSeries)
             });
 
+            // Logout user if token has expired
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
@@ -89,6 +108,7 @@ const App = () => {
         } catch (err) {
             setError('Something went wrong when adding series. Reload page and try again.');
         } finally {
+            // Get and set the list of series added to the user
             await getUserSeriesList();
         }
     }
@@ -103,6 +123,7 @@ const App = () => {
                 }
             });
 
+            // Logout user if token has expired
             if ([401, 403].includes(response.status)) {
                 logoutUser();
             } else {
@@ -119,10 +140,12 @@ const App = () => {
         } catch (err) {
             setError('Something went wrong when removing series. Reload page and try again.');
         } finally {
+            // Get and set the list of series added to the user with function in the App component
             await getUserSeriesList();
         }
     }
 
+    // Get list  of series added to the user when the component loads
     useEffect(() => {
         (async () => {
             const storedUser = getUser();
@@ -139,6 +162,7 @@ const App = () => {
                     }
                 });
 
+                // Logout user if token has expired
                 if ([401, 403].includes(response.status)) {
                     logoutUser();
                 } else {
@@ -148,7 +172,9 @@ const App = () => {
                         throw new Error(response.statusText);
                     }
 
+                    // Set list of series to state
                     setUserSeriesList(userSeriesList);
+
                     setError(null);
                 }
             } catch (err) {
@@ -157,24 +183,27 @@ const App = () => {
                 setIsLoaded(true);
             }
         })();
-    }, [loggedIn])
+    }, [loggedIn]) // Run again when user logs in
 
+    // Show Login component if there is no user in local storage
     if (!user) {
         return <Login appName={appName} apiUrl={apiUrl} setLoggedIn={setLoggedIn} />
     }
 
+    // Show error if there is one
     if (error) {
         const message = document.querySelector('.message');
         message.classList.add('error', 'is-active');
         message.innerHTML = error;
     }
     
+    // Return component with the router
     return (
         <BrowserRouter>
             <Header appName={appName} />
-                <main id="main-content">
-                    <div className="message" aria-live="polite"></div>
-                    {!isLoaded && <div className="loading">Loading...</div>}
+                <main id='main-content'>
+                    <div className='message' aria-live='polite'></div>
+                    {!isLoaded && <div className='loading'>Loading...</div>}
                     {isLoaded && (
                         <Routes>
                             <Route path='/' element={
@@ -230,7 +259,7 @@ const App = () => {
                                 />
                             } 
                             />
-                            <Route path="*" element={(
+                            <Route path='*' element={(
                                 <>
                                     <h1>This page doesn't exist!</h1>
                                     <p>Navigate in the menu to find your way!</p>
@@ -244,4 +273,5 @@ const App = () => {
     );
 }
 
+// Export component
 export default App;

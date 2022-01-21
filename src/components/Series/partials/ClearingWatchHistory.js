@@ -1,7 +1,16 @@
+/**
+ * Clearing Watch History component.
+ * 
+ * Handles prompt for clearing watch history when user
+ * is moving series from "Have watched".
+ * 
+ * @author: Sofie Wallin
+ */
+
 import React, { useEffect } from 'react';
 
 const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory, setIsMovingSeries }) => {
-    
+    // Hide "Moving Series"- prompt if there is one when coming from Series Details view.
     useEffect(() => {
         if (setIsMovingSeries) {
             const changeWatchingStatusPrompt = document.querySelector('.changing-watching-status-prompt-wrapper');
@@ -9,22 +18,36 @@ const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory,
         }
     }, [])
 
+    // Handle click on Y/N-buttons
     const handleClick = async e => {
         e.preventDefault();
         const answer = e.target.value;
+
+        // Clear watch history with function from Series component if answer is yes
         if (answer === 'Yes') await clearWatchHistory();
+
+        // Change watching status with function from Series component
         await changeWatchingStatus('watching-now');
+
+        // Close "Clearing Watch History"-prompt
         setIsClearingWatchHistory(false);
+
+        // Close "Moving Series"-prompt if there is one
         if (setIsMovingSeries) setIsMovingSeries(false);
     }
 
+    // Handle click on close button
     const closePrompt = e => {
         e.preventDefault();
+
+        // Close "Clearing Watch History"-prompt
         setIsClearingWatchHistory(false);
-        setIsMovingSeries(false);
-        return;
+
+        // Close "Moving Series"-prompt if there is one
+        if (setIsMovingSeries) setIsMovingSeries(false);
     }
 
+    // Return component
     return (
         <div className='prompt-wrapper'>
             <div className="prompt centered" aria-live="polite">
@@ -40,4 +63,5 @@ const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory,
     );
 }
 
+// Export component
 export default ClearingWatchHistory;

@@ -23,4 +23,5 @@ const Footer = ({ appName, logoutUser }) => {
     );
 }
 
+// Export component
 export default Footer;

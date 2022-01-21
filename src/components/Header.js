@@ -35,4 +35,5 @@ const Header = ({ appName }) => {
     );
 }
 
+// Export component
 export default Header;
