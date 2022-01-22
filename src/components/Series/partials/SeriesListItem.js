@@ -21,20 +21,28 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
 
     // Set different actions based on watching status
     useEffect(() => {
+        let isMounted = true;
         switch (watchingStatus) {
             case 'Watching now':
-                setAction('Finish watching');
-                setValue('have-watched');
+                if (isMounted) {
+                    setAction('Finish watching');
+                    setValue('have-watched');
+                }
                 break;
             case 'Watch next':
-                setAction('Start watching');
-                setValue('watching-now');
+                if (isMounted) {
+                    setAction('Start watching');
+                    setValue('watching-now');
+                }
                 break;
             case 'Have watched':
-                setAction('Watch again');
-                setValue('watching-now');
+                if (isMounted) {
+                    setAction('Watch again');
+                    setValue('watching-now');
+                }
                 break;
         }
+        return () => { isMounted = false };
     }, [])
 
     // Handle click on button on series list item
@@ -62,7 +70,7 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
             {isClearingWatchHistory && (
                 <ClearingWatchHistory
                     series={series}
-                    watchingStatusParameter='watching-now'
+                    newWatchingStatus='watching-now'
                     changeWatchingStatus={changeWatchingStatus}
                     clearWatchHistory={clearWatchHistory}
                     setIsClearingWatchHistory={setIsClearingWatchHistory}

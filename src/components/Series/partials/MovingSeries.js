@@ -9,18 +9,18 @@
  * @author: Sofie Wallin
  */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import ClearingWatchHistory from './ClearingWatchHistory';
 
 const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatchHistory, setIsMovingSeries }) => {
-    const [newWatchingStatus, setNewWatchingStatus] = useState(null);
+    const newWatchingStatus = useRef(null);
     const [isClearingWatchHistory, setIsClearingWatchHistory] = useState(false);
 
     // Handle click on one of the "watching status"-buttons
     const handleClick = async e => {
         e.preventDefault();
-        setNewWatchingStatus(e.target.value);
+        newWatchingStatus.current = e.target.value;
         
         /* Check if watching status is currently "Have Watched" and 
         render Clearing Watch History component if it is. Otherwise
@@ -29,7 +29,7 @@ const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatch
             setIsClearingWatchHistory(true);
         } else {
             // Change watching status with function in the Series component
-            await changeWatchingStatus(newWatchingStatus);
+            await changeWatchingStatus(newWatchingStatus.current);
 
             // Close prompt
             setIsMovingSeries(false);
@@ -90,7 +90,7 @@ const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatch
                 {isClearingWatchHistory && (
                     <ClearingWatchHistory
                         series={series}
-                        newWatchingStatus={newWatchingStatus}
+                        newWatchingStatus={newWatchingStatus.current}
                         changeWatchingStatus={changeWatchingStatus}
                         clearWatchHistory={clearWatchHistory}
                         setIsClearingWatchHistory={setIsClearingWatchHistory}
