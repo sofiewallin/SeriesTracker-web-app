@@ -14,12 +14,13 @@ import React, { useState } from 'react';
 import ClearingWatchHistory from './ClearingWatchHistory';
 
 const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatchHistory, setIsMovingSeries }) => {
+    const [newWatchingStatus, setNewWatchingStatus] = useState(null);
     const [isClearingWatchHistory, setIsClearingWatchHistory] = useState(false);
 
     // Handle click on one of the "watching status"-buttons
     const handleClick = async e => {
         e.preventDefault();
-        const watchingStatusParameter = e.target.value;
+        setNewWatchingStatus(e.target.value);
         
         /* Check if watching status is currently "Have Watched" and 
         render Clearing Watch History component if it is. Otherwise
@@ -28,7 +29,7 @@ const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatch
             setIsClearingWatchHistory(true);
         } else {
             // Change watching status with function in the Series component
-            await changeWatchingStatus(watchingStatusParameter);
+            await changeWatchingStatus(newWatchingStatus);
 
             // Close prompt
             setIsMovingSeries(false);
@@ -89,6 +90,7 @@ const MovingSeries = ({ series, watchingStatus, changeWatchingStatus, clearWatch
                 {isClearingWatchHistory && (
                     <ClearingWatchHistory
                         series={series}
+                        newWatchingStatus={newWatchingStatus}
                         changeWatchingStatus={changeWatchingStatus}
                         clearWatchHistory={clearWatchHistory}
                         setIsClearingWatchHistory={setIsClearingWatchHistory}

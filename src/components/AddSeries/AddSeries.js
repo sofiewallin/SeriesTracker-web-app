@@ -39,6 +39,7 @@ const AddSeries = ({ user, logoutUser, apiUrl, userSeriesList, addUserSeries, re
                 <button type='submit' className='button button-search'><span className='hidden-visually'>Search series</span></button>
             </form>
             <section id='search-results'>
+                <h2 className='hidden-visually'>Search results</h2>
                 {searchQuery && (
                     <SearchedSeriesList 
                         user={user}

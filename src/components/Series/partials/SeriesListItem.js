@@ -62,6 +62,7 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
             {isClearingWatchHistory && (
                 <ClearingWatchHistory
                     series={series}
+                    watchingStatusParameter='watching-now'
                     changeWatchingStatus={changeWatchingStatus}
                     clearWatchHistory={clearWatchHistory}
                     setIsClearingWatchHistory={setIsClearingWatchHistory}
