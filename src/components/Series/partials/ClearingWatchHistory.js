@@ -9,7 +9,7 @@
 
 import React, { useEffect } from 'react';
 
-const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory, setIsMovingSeries }) => {
+const ClearingWatchHistory = ({ series, newWatchingStatus, changeWatchingStatus, clearWatchHistory, setIsClearingWatchHistory, setIsMovingSeries }) => {
     // Hide "Moving Series"- prompt if there is one when coming from Series Details view.
     useEffect(() => {
         if (setIsMovingSeries) {
@@ -27,7 +27,7 @@ const ClearingWatchHistory = ({ series, changeWatchingStatus, clearWatchHistory,
         if (answer === 'Yes') await clearWatchHistory();
 
         // Change watching status with function from Series component
-        await changeWatchingStatus('watching-now');
+        await changeWatchingStatus(newWatchingStatus);
 
         // Close "Clearing Watch History"-prompt
         setIsClearingWatchHistory(false);
