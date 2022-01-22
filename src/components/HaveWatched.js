@@ -35,8 +35,8 @@ const HaveWatched = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
     // Return component
     return (
         <section id='series-watch-next'>
-            <h1 className='heading heading-big'>Time to pick up an old favorite?</h1>
-            <h2 className='heading heading-medium'>Your watch history</h2>
+            <h1 className='heading heading-big'>Watch history</h1>
+            <h2 className='heading heading-medium'>Series you have watched</h2>
             <ul className='series-list'>
                 {filteredUserSeriesList.map(userSeries => (
                     <li key={userSeries._id}>

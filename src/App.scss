@@ -791,21 +791,44 @@ label {
 \*------------------------------------*/
 
 .series-list-item {
+    position: relative;
+
+    & a {
+        padding-bottom: 4.8rem;
+
+        @include breakpoint(mobile-big) {
+            padding-right: 16.8rem;
+            padding-bottom: 1.2rem;
+        }
+
+        @include breakpoint(tablet) {
+            padding-right: 20.0rem;
+            padding-bottom: 1.6rem;
+        }
+    }
 
     & .heading-list-item {
         margin-bottom: 0;
-
-        @include breakpoint(mobile-big) {
-            float: left;
-            width: 50%;
-        }
     }
-    & .button {
-        margin-top: 1.2rem;
+
+    & a + .button {
+        left: 1.2rem;
+        margin-top: -4.0rem;
+        position: absolute;
+        top: 100%;
 
         @include breakpoint(mobile-big) {
-            float: right;
-            margin-top: 0;
+            left: 100%;
+            margin-top: -1.4rem;
+            margin-left: -15.6rem;
+            top: 50%;
+            width: 14.4rem;
+        }
+
+        @include breakpoint(tablet) {
+            margin-top: -1.7rem;
+            margin-left: -18.4rem;
+            width: 16.8rem;
         }
     }
 }

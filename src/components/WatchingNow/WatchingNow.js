@@ -41,7 +41,7 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
                 <h1 className='heading heading-big'>What are you watching today?</h1>
             </header>
          <section id='next-episode'>
-            <h2 className='heading heading-medium'>Next episode to watch</h2>
+            <h2 className='heading heading-medium'>Next episode</h2>
             <ul className='next-episode-list'>
                 {filteredUserSeriesList.map(userSeries => 
                     userSeries.nextEpisode && (
@@ -62,7 +62,7 @@ const WatchingNow = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesLi
             }
             </section>
             <section id='series-watching-now'>
-                <h2 className='heading heading-medium'>Your current series</h2>
+                <h2 className='heading heading-medium'>Series you're watching right now</h2>
                 <ul className='series-list'>
                     {filteredUserSeriesList.map(userSeries => (
                         <li key={userSeries._id}>

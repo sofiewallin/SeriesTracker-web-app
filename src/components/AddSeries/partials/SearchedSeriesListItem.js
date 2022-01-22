@@ -52,8 +52,10 @@ const SearchedSeriesListItem = ({ series, userSeriesList, addUserSeries, removeU
 
     // Return component
     return (
-        <article className='series-list-item box box-link clear'>
-            <h3 className='heading heading-list-item'><Link to={'/series/' + series._id}>{series.name}</Link></h3>
+        <article id={`series-${series._id}`} className='series-list-item'>
+            <Link to={'/series/' + series._id} className='box box-link'>
+                <h3 className='heading heading-list-item'>{series.name}</h3>
+            </Link>
             {!userSeries && (
                 <>
                     <button className='button button-add button-small' onClick={handleAdd}>Add Series</button>

@@ -35,8 +35,8 @@ const WatchNext = ({ user, logoutUser, apiUrl, userSeriesList, getUserSeriesList
     // Return component
     return (
         <section id='series-watch-next'>
-            <h1 className='heading heading-big'>What's next on the list?</h1>
-            <h2 className='headin heading-medium'>Your watchlist</h2>
+            <h1 className='heading heading-big'>Watchlist</h1>
+            <h2 className='headin heading-medium'>Series you want to watch next</h2>
             <ul className='series-list'>
                 {filteredUserSeriesList.map(userSeries => (
                     <li key={userSeries._id}>

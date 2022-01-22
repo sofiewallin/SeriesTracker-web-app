@@ -54,20 +54,20 @@ const SeriesListItem = ({ watchingStatus, series, changeWatchingStatus, clearWat
 
     // Return component
     return (
-        <Link to={'/series/' + series._id} className='box box-link'>
-            <article id={`series-${series._id}`} className='series-list-item clear'>
+        <article id={`series-${series._id}`} className='series-list-item'>
+            <Link to={'/series/' + series._id} className='box box-link'>
                 <h3 className='heading heading-list-item'>{series.name}</h3>
-                <button className='button button-small' value={value} onClick={handleClick}>{action}</button>
-                {isClearingWatchHistory && (
-                    <ClearingWatchHistory
-                        series={series}
-                        changeWatchingStatus={changeWatchingStatus}
-                        clearWatchHistory={clearWatchHistory}
-                        setIsClearingWatchHistory={setIsClearingWatchHistory}
-                    />
-                )}
-            </article>
             </Link>
+            <button className='button button-small' value={value} onClick={handleClick}>{action}</button>
+            {isClearingWatchHistory && (
+                <ClearingWatchHistory
+                    series={series}
+                    changeWatchingStatus={changeWatchingStatus}
+                    clearWatchHistory={clearWatchHistory}
+                    setIsClearingWatchHistory={setIsClearingWatchHistory}
+                />
+            )}
+        </article>
     );
 }
 
