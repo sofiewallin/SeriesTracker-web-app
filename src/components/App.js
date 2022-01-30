@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Login from './Login';
 
@@ -47,6 +47,46 @@ const App = () => {
         setUser(null);
         setLoggedIn(false);
     }
+
+    // Get list  of series added to the user when the component loads
+    useEffect(() => {
+        (async () => {
+            const storedUser = getUser();
+            if (storedUser === null) return;
+
+            setUser(storedUser);
+
+            try {
+                const response = await fetch(`${apiUrl}/users/${storedUser.userId}/series`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${storedUser.token}`
+                    }
+                });
+
+                // Logout user if token has expired
+                if ([401, 403].includes(response.status)) {
+                    logoutUser();
+                } else {
+                    const userSeriesList = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+
+                    // Set list of series to state
+                    setUserSeriesList(userSeriesList);
+
+                    setError(null);
+                }
+            } catch (err) {
+                setError('Something went wrong when getting list of series. Reload page and try again.');
+            } finally {
+                setIsLoaded(true);
+            }
+        })();
+    }, [loggedIn]) // Run again when user logs in
 
     // Get list of series added to the user from the API
     const getUserSeriesList = async () => {
@@ -113,6 +153,7 @@ const App = () => {
         }
     }
 
+    // Remove series added to user in the API
     const removeUserSeries = async userSeriesId => {
         try {
             const response = await fetch(`${apiUrl}/users/${user.userId}/remove-series/${userSeriesId}`, {
@@ -140,50 +181,10 @@ const App = () => {
         } catch (err) {
             setError('Something went wrong when removing series. Reload page and try again.');
         } finally {
-            // Get and set the list of series added to the user with function in the App component
+            // Get and set the list of series added to the user
             await getUserSeriesList();
         }
     }
-
-    // Get list  of series added to the user when the component loads
-    useEffect(() => {
-        (async () => {
-            const storedUser = getUser();
-            if (storedUser === null) return;
-
-            setUser(getUser());
-
-            try {
-                const response = await fetch(`${apiUrl}/users/${storedUser.userId}/series`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${storedUser.token}`
-                    }
-                });
-
-                // Logout user if token has expired
-                if ([401, 403].includes(response.status)) {
-                    logoutUser();
-                } else {
-                    const userSeriesList = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(response.statusText);
-                    }
-
-                    // Set list of series to state
-                    setUserSeriesList(userSeriesList);
-
-                    setError(null);
-                }
-            } catch (err) {
-                setError('Something went wrong when getting list of series. Reload page and try again.');
-            } finally {
-                setIsLoaded(true);
-            }
-        })();
-    }, [loggedIn]) // Run again when user logs in
 
     // Show Login component if there is no user in local storage
     if (!user) {

@@ -247,7 +247,7 @@ const Series = ({ user, logoutUser, apiUrl, userSeries, seriesId, isListItem, ge
                     setError(null);
                 }
             } catch (err) {
-                setError('Something went wrong when getting list of series. Reload page and try again.');
+                setError('Something went wrong when getting a series. Reload page and try again.');
             } finally {
                 setIsLoaded(true);
             }
